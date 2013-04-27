@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class Class extends Unit {
 
-    private Set<Interface> interfaces = Sets.newHashSet();
+    private Set<Interface> interfaces = Sets.newHashSet(); // NOPMD
 
     public Class(Package containingPackage, String name) {
         super(containingPackage, name);

@@ -40,7 +40,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.targetJdk>1.7</project.build.targetJdk>
+        <project.build.targetJdk>1.6</project.build.targetJdk>
     </properties>
 
     <dependencies>
@@ -188,7 +188,7 @@
                     <descriptorRefs>
                         <descriptorRefs>jar-with-dependencies</descriptorRefs>
                     </descriptorRefs>
-                    <finalName>${project.name}</finalName>
+                    <finalName>${project.artifactId}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <attach>false</attach>
                 </configuration>

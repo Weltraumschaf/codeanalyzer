@@ -24,7 +24,7 @@ class Unit {
 
     private final Package containingPackage;
     private final String name;
-    private Set<Class> extensions = Sets.newHashSet();
+    private Set<Class> extensions = Sets.newHashSet(); // NOPMD
 
     public Unit(Package containingPackage, String name) {
         super();
