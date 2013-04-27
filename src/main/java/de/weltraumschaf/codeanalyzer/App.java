@@ -11,17 +11,24 @@
  */
 package de.weltraumschaf.codeanalyzer;
 
+import com.google.common.collect.Sets;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
  * Main application class.
@@ -39,17 +46,23 @@ public class App {
      * STDOUT.
      */
     private final PrintStream out;
+    /**
+     * STDERR.
+     */
+    private final PrintStream err;
 
     /**
      * Dedicated constructor.
      *
      * @param args command line arguments
      * @param out print stream for STDOUT
+     * @param err print stream for STDERR
      */
-    public App(final List<String> args, final PrintStream out) {
+    public App(final List<String> args, final PrintStream out, final PrintStream err) {
         super();
         this.args = args;
         this.out = out;
+        this.err = err;
     }
 
     /**
@@ -58,7 +71,7 @@ public class App {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
-        final App app = new App(Arrays.asList(args), System.out);
+        final App app = new App(Arrays.asList(args), System.out, System.err);
         System.exit(app.run());
     }
 
@@ -68,46 +81,65 @@ public class App {
      * @return exit code, everything else than 0 means error
      */
     private int run() {
-        collectData();
+        final Collection<File> files = readSourceFiles();
+        try {
+            collectData(files);
+        } catch (IOException ex) {
+            err.println(ex.getMessage());
+            return 1;
+        }
         return 0;
     }
 
-    /**
-     * parse source from given directory and put data in collector.
-     */
-    private void collectData() {
+    private Collection<File> readSourceFiles() {
+        if (args.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return FileUtils.listFiles(
+                new File(args.get(0)),
+                new RegexFileFilter("^.*\\.java$"),
+                DirectoryFileFilter.DIRECTORY);
+    }
+
+    private void collectData(final Collection<File> files) throws IOException {
+        for (final File file : files) {
+            parseFile(file);
+        }
+    }
+
+    private void parseFile(final File file) throws IOException {
         // Example http://www.programcreek.com/2011/01/a-complete-standalone-example-of-astparser/
-        final ASTParser parser = ASTParser.newParser(AST.JLS3);
-        final String source = "public class A {\n"
-                + "int i = 9;  \n"
-                + "int j; \n"
-                + "ArrayList<Integer> al = new ArrayList<Integer>();\n"
-                + "j=1000;\n"
-                + "}";
+        final ASTParser parser = ASTParser.newParser(AST.JLS4);
+        final String source = FileUtils.readFileToString(file, "utf-8");
         parser.setSource(source.toCharArray());
-        //parser.setSource("/*abc*/".toCharArray());
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
-        //ASTNode node = parser.createAST(null);
-
-
         final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-
+        final Package pkg = Package.create(cu.getPackage().getName().toString());
         cu.accept(new ASTVisitor() {
-            Set names = new HashSet();
+            final Set names = Sets.newHashSet();
 
             @Override
-            public boolean visit(final VariableDeclarationFragment node) {
-                final SimpleName name = node.getName();
-                this.names.add(name.getIdentifier());
-                out.println("Declaration of '" + name + "' at line" + cu.getLineNumber(name.getStartPosition()));
-                return false; // do not continue to avoid usage info
-            }
+            public boolean visit(final TypeDeclaration node) {
+                final Name name = node.getName();
+                final String type;
 
-            @Override
-            public boolean visit(final SimpleName node) {
-                if (this.names.contains(node.getIdentifier())) {
-                    out.println("Usage of '" + node + "' at line " + cu.getLineNumber(node.getStartPosition()));
+                if (node.isInterface()) {
+                    type = "interface";
+                    final Interface iface = new Interface(pkg, name.toString());
+                    data.addInterface(iface);
+                } else {
+                    type = "class";
+                    final Class clazz = new Class(pkg, name.toString());
+                    data.addClass(clazz);
                 }
+
+                out.println(String.format("Found %s '%s.%s' at line %d in %s.",
+                    type,
+                    pkg.getFullQualifiedName(),
+                    name.toString(),
+                    cu.getLineNumber(name.getStartPosition()),
+                    file.getAbsolutePath()));
                 return true;
             }
         });
