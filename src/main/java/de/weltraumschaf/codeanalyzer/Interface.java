@@ -49,4 +49,18 @@ final class Interface extends Unit {
     public void addImplementation(final Class implementation) {
         implementations.put(implementation.getFullQualifiedName(), implementation);
     }
+
+    @Override
+    public void update(final Unit unit) {
+        if (equals(unit)) {
+            return;
+        }
+
+        if (!(unit instanceof Interface)) {
+            return;
+        }
+
+        final Interface other = (Interface) unit;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

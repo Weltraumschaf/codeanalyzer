@@ -60,4 +60,18 @@ final class Class extends Unit {
         return isAbstract;
     }
 
+    @Override
+    public void update(final Unit unit) {
+        if (equals(unit)) {
+            return;
+        }
+        
+        if (!(unit instanceof Class)) {
+            return;
+        }
+
+        final Class other = (Class) unit;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

@@ -65,7 +65,14 @@ abstract class Unit {
     public Visibility getVisibility() {
         return visibility;
     }
-    
+
+    /**
+     * Took an other unit and checks if it has newer information than itself.
+     *
+     * @param unit unit to get new information from
+     */
+    public abstract void update(final Unit unit);
+
     @Override
     public int hashCode() {
         return Objects.hashCode(containingPackage, name);
