@@ -19,8 +19,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -105,10 +103,7 @@ public class App {
             return Collections.emptyList();
         }
 
-        return FileUtils.listFiles(
-                new File(args.get(0)),
-                new RegexFileFilter("^.*\\.java$"),
-                DirectoryFileFilter.DIRECTORY);
+        return new FileFinder().findJava(new File(args.get(0)));
     }
 
     private void collectData(final Collection<File> files) throws IOException {

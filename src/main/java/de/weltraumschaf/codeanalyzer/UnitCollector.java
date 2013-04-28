@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public final class UnitCollector {
+final class UnitCollector {
 
     private Map<String, Interface> interfaces = Maps.newHashMap();
     private Map<String, Class> classes = Maps.newHashMap();

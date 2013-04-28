@@ -24,7 +24,7 @@ import com.google.common.base.Objects;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Package {
+class Package {
 
     /**
      * Package name separator.

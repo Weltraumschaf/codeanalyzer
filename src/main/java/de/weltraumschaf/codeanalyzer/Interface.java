@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Interface extends Unit {
+final class Interface extends Unit {
 
     private final Map<String, Interface> extendingInterfaces = Maps.newHashMap();
     private final Map<String, Class> implementations = Maps.newHashMap();

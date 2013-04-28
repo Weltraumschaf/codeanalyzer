@@ -12,28 +12,17 @@
 
 package de.weltraumschaf.codeanalyzer;
 
+import org.junit.Test;
+
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-final class Position {
+public class JavaFileAnalyzerTest {
 
-    static final Position DEFAULT = new Position("", 0);
+    public class JavaFileAnalyzer {}
 
-    private final String fileName;
-    private final int lineNumber;
-
-    public Position(String fileName, int lineNumber) {
-        this.fileName = fileName;
-        this.lineNumber = lineNumber;
+    @Test public void analyzeFile() {
+        
     }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
 }

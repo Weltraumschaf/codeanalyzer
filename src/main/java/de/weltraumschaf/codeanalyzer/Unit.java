@@ -62,6 +62,10 @@ abstract class Unit {
         this.position = position;
     }
 
+    public Visibility getVisibility() {
+        return visibility;
+    }
+    
     @Override
     public int hashCode() {
         return Objects.hashCode(containingPackage, name);

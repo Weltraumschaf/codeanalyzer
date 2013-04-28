@@ -18,14 +18,13 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Visitor extends ASTVisitor {
+final class Visitor extends ASTVisitor {
 
     private final UnitCollector data;
     private final Package pkg;
@@ -44,9 +43,9 @@ public class Visitor extends ASTVisitor {
     public boolean visit(final TypeDeclaration node) {
         final Unit unit;
 
-        Type sup = node.getSuperclassType();
-        List ifs = node.superInterfaceTypes();
-        TypeDeclaration[] types = node.getTypes();
+//        Type sup = node.getSuperclassType();
+//        List ifs = node.superInterfaceTypes();
+//        TypeDeclaration[] types = node.getTypes();
 
 
         if (node.isInterface()) {
