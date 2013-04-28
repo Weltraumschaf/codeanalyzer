@@ -75,7 +75,7 @@ public class PackageTest {
     @Test public void create_throwsExceptionIfNull() {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage("Name must not be null!");
-        Package.create(null);
+        Package.create((String) null);
     }
 
     @Test public void create_throwsExceptionIfEmpty() {

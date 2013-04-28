@@ -14,6 +14,7 @@ package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Objects;
+import org.eclipse.jdt.core.dom.Name;
 
 /**
  * Represents a Java package.
@@ -34,6 +35,7 @@ class Package {
      * Used as top of the package hierarchy.
      */
     static final Package NULL = new Null();
+
     /**
      * Parent package.
      *
@@ -221,6 +223,16 @@ class Package {
         }
 
         return new Package(create(parentName), baseName);
+    }
+
+    /**
+     * See {@link #create(java.lang.String).
+     *
+     * @param fullQualifiedName package name object
+     * @return new package object
+     */
+    static Package create(final Name fullQualifiedName) {
+        return create(fullQualifiedName.toString());
     }
 
     /**

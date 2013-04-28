@@ -23,10 +23,12 @@ import java.util.Map;
 final class Class extends Unit {
 
     private final Map<String, Interface> implementedInterfaces = Maps.newHashMap();
+    private final boolean isAbstract;
     private Class extendedClass;
 
-    public Class(final Package containingPackage, final String name, final Visibility visibility) {
+    public Class(final Package containingPackage, final String name, final Visibility visibility, final boolean isAbstract) {
         super(containingPackage, name, visibility);
+        this.isAbstract = isAbstract;
     }
 
     public void implement(final Interface iface) {
@@ -52,6 +54,10 @@ final class Class extends Unit {
 
     public void setExtendedClass(Class extendedClass) {
         this.extendedClass = extendedClass;
+    }
+
+    public boolean isIsAbstract() {
+        return isAbstract;
     }
 
 }

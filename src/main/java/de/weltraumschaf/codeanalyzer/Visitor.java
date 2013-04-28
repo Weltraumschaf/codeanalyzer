@@ -65,11 +65,26 @@ final class Visitor extends ASTVisitor {
     }
 
     private Unit visitClassDeclaration(final TypeDeclaration node) {
-        final Class clazz = new Class(pkg, node.getName().toString(), determineVisibility(node));
+        final Class clazz = new Class(
+            pkg,
+            node.getName().toString(),
+            determineVisibility(node),
+            determineAbstractness(node));
         data.addClass(clazz);
         return clazz;
     }
 
+    private boolean determineAbstractness(final TypeDeclaration node) {
+        final List<Modifier> mods = node.modifiers();
+
+        for (final Modifier m : mods) {
+            if (m.isAbstract()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     private Visibility determineVisibility(final TypeDeclaration node) {
         final List<Modifier> mods = node.modifiers();
 
