@@ -17,7 +17,7 @@ package de.weltraumschaf.codeanalyzer.test;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class OneImplB extends AbstractOne {
+class OneImplB extends AbstractOne {
 
     @Override
     public void bar() {}
