@@ -13,23 +13,33 @@
 package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.Sets;
-import java.util.Set;
 
 /**
+ * Abstract base class for {@link Class} and {@link Interface}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class Unit {
+abstract class Unit {
 
+    /**
+     * Package in which the unit is declared.
+     */
     private final Package containingPackage;
+    /**
+     * Name of the class or interface.
+     */
     private final String name;
-    private Set<Class> extensions = Sets.newHashSet(); // NOPMD
+    private final Visibility visibility;
+    /**
+     * Position in the source code where it is declared.
+     */
+    private Position position = Position.DEFAULT;
 
-    public Unit(Package containingPackage, String name) {
+    public Unit(final Package containingPackage, final String name, final Visibility visibility) {
         super();
         this.containingPackage = containingPackage;
         this.name = name;
+        this.visibility = visibility;
     }
 
     public Package getContainingPackage() {
@@ -42,6 +52,14 @@ class Unit {
 
     public String getFullQualifiedName() {
         return containingPackage.getFullQualifiedName() + Package.SEPARATOR + name;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     @Override
@@ -61,7 +79,10 @@ class Unit {
 
     @Override
     public String toString() {
-        return containingPackage.toString() + Package.SEPARATOR + name;
+        return getFullQualifiedName();
     }
 
+    public static enum Visibility {
+        PRIVATE, PACKAGE, PROTECTED, PUBLIC;
+    }
 }

@@ -12,19 +12,46 @@
 
 package de.weltraumschaf.codeanalyzer;
 
-import com.google.common.collect.Sets;
-import java.util.Set;
+import com.google.common.collect.Maps;
+import java.util.Map;
 
 /**
+ * Represents a Java class.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class Class extends Unit {
 
-    private Set<Interface> interfaces = Sets.newHashSet(); // NOPMD
+    private final Map<String, Interface> implementedInterfaces = Maps.newHashMap();
+    private Class extendedClass;
 
-    public Class(Package containingPackage, String name) {
-        super(containingPackage, name);
+    public Class(final Package containingPackage, final String name, final Visibility visibility) {
+        super(containingPackage, name, visibility);
+    }
+
+    public void implement(final Interface iface) {
+        implementedInterfaces.put(iface.getFullQualifiedName(), iface);
+    }
+
+    public boolean doesImplement(final String fullQualifiedName) {
+        return implementedInterfaces.containsKey(fullQualifiedName);
+    }
+
+    public Interface getInterface(final String fullQualifiedName) {
+        if (!doesImplement(fullQualifiedName)) {
+            throw new IllegalArgumentException(
+                String.format("Class %s does not implement %s!", getFullQualifiedName(), fullQualifiedName));
+        }
+
+        return implementedInterfaces.get(fullQualifiedName);
+    }
+
+    public Class getExtendedClass() {
+        return extendedClass;
+    }
+
+    public void setExtendedClass(Class extendedClass) {
+        this.extendedClass = extendedClass;
     }
 
 }

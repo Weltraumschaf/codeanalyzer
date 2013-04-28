@@ -141,10 +141,7 @@ public class Package {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                      .add("parent", parent)
-                      .add("baseName", baseName)
-                      .toString();
+        return getFullQualifiedName();
     }
 
     /**

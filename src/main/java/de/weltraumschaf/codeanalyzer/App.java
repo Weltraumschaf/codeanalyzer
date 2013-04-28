@@ -11,7 +11,6 @@
  */
 package de.weltraumschaf.codeanalyzer;
 
-import com.google.common.collect.Sets;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -19,29 +18,39 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
  * Main application class.
  *
+ * TODO
+ * - Add CLI options
+ *      - -h|--help
+ *      - -v|--version
+ *      - -e|--encoding ENCODING
+ *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class App {
+    private static final String DEFAULT_ENCODING = "utf-8";
 
     /**
      * Command line arguments.
      */
-    private final List<String> args; // NOPMD
-    private final UnitCollector data = new UnitCollector(); // NOPMD
+    private final List<String> args;
+    /**
+     * Collect parsed units.
+     */
+    private final UnitCollector data = new UnitCollector();
+    /**
+     * Parses the code.
+     */
+    private final ASTParser parser = ASTParser.newParser(AST.JLS4);
     /**
      * STDOUT.
      */
@@ -109,39 +118,11 @@ public class App {
     }
 
     private void parseFile(final File file) throws IOException {
-        // Example http://www.programcreek.com/2011/01/a-complete-standalone-example-of-astparser/
-        final ASTParser parser = ASTParser.newParser(AST.JLS4);
-        final String source = FileUtils.readFileToString(file, "utf-8");
+        final String source = FileUtils.readFileToString(file, DEFAULT_ENCODING);
         parser.setSource(source.toCharArray());
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
         final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
         final Package pkg = Package.create(cu.getPackage().getName().toString());
-        cu.accept(new ASTVisitor() {
-            final Set names = Sets.newHashSet();
-
-            @Override
-            public boolean visit(final TypeDeclaration node) {
-                final Name name = node.getName();
-                final String type;
-
-                if (node.isInterface()) {
-                    type = "interface";
-                    final Interface iface = new Interface(pkg, name.toString());
-                    data.addInterface(iface);
-                } else {
-                    type = "class";
-                    final Class clazz = new Class(pkg, name.toString());
-                    data.addClass(clazz);
-                }
-
-                out.println(String.format("Found %s '%s.%s' at line %d in %s.",
-                    type,
-                    pkg.getFullQualifiedName(),
-                    name.toString(),
-                    cu.getLineNumber(name.getStartPosition()),
-                    file.getAbsolutePath()));
-                return true;
-            }
-        });
+        cu.accept(new Visitor(data, pkg, cu, file));
     }
 }
