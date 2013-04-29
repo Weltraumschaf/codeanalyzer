@@ -82,7 +82,7 @@ final class Position {
 
     @Override
     public String toString() {
-        return fileName + ":" + lineNumber;
+        return getFileName() + ":" + getLineNumber();
     }
 
 }

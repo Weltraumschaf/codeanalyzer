@@ -19,12 +19,15 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
+ * Tests for {@link Package}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class PackageTest {
 
+    //CHECKSTYLE:OFF
     @Rule public ExpectedException thrown = ExpectedException.none();
+    //CHECKSTYLE:ON
 
     @Test public void validateBaseName_throwsExceptionIfNull() {
         thrown.expect(NullPointerException.class);
@@ -90,6 +93,7 @@ public class PackageTest {
         assertThat(p.isRoot(), is(true));
         assertThat(p.getParent(), is(Package.NULL));
         assertThat(p.getFullQualifiedName(), is("foo"));
+        assertThat(p.toString(), is("foo"));
     }
 
     @Test public void create_twoPackageHirarchy() {
@@ -98,6 +102,7 @@ public class PackageTest {
         assertThat(p.isRoot(), is(false));
         assertThat(p.getParent(), is(Package.create("foo")));
         assertThat(p.getFullQualifiedName(), is("foo.bar"));
+        assertThat(p.toString(), is("foo.bar"));
     }
 
     @Test public void create_threePackageHirarchy() {
@@ -106,6 +111,7 @@ public class PackageTest {
         assertThat(p.isRoot(), is(false));
         assertThat(p.getParent(), is(Package.create("foo.bar")));
         assertThat(p.getFullQualifiedName(), is("foo.bar.baz"));
+        assertThat(p.toString(), is("foo.bar.baz"));
     }
 
     @Test public void splitBaseName() {
@@ -126,6 +132,54 @@ public class PackageTest {
         assertThat(sub.getBaseName(), is("bar"));
         assertThat(sub.getParent(), is(p));
         assertThat(sub.getFullQualifiedName(), is("foo.bar"));
+    }
+
+    @Test public void testHashCode() {
+        final Package p1 = Package.create("foo.bar");
+        final Package p2 = Package.create("foo.bar");
+        final Package p3 = Package.create("foo.baz");
+
+        assertThat(p1.hashCode(), is(equalTo(p1.hashCode())));
+        assertThat(p1.hashCode(), is(equalTo(p2.hashCode())));
+        assertThat(p2.hashCode(), is(equalTo(p1.hashCode())));
+        assertThat(p2.hashCode(), is(equalTo(p2.hashCode())));
+        assertThat(p3.hashCode(), is(equalTo(p3.hashCode())));
+
+        assertThat(p1.hashCode(), is(not(equalTo(p3.hashCode()))));
+        assertThat(p2.hashCode(), is(not(equalTo(p3.hashCode()))));
+    }
+
+    @Test public void testHequals() {
+        final Package p1 = Package.create("foo.bar");
+        final Package p2 = Package.create("foo.bar");
+        final Package p3 = Package.create("foo.baz");
+
+        assertThat(p1.equals(p1), is(equalTo(true)));
+        assertThat(p1.equals(p2), is(equalTo(true)));
+        assertThat(p2.equals(p1), is(equalTo(true)));
+        assertThat(p2.equals(p2), is(equalTo(true)));
+        assertThat(p3.equals(p3), is(equalTo(true)));
+
+        assertThat(p1.equals(p3), is(equalTo(false)));
+        assertThat(p3.equals(p1), is(equalTo(false)));
+        assertThat(p2.equals(p3), is(equalTo(false)));
+        assertThat(p3.equals(p2), is(equalTo(false)));
+
+        assertThat(p1.equals(new Object()), is(equalTo(false)));
+        assertThat(p2.equals(new Object()), is(equalTo(false)));
+        assertThat(p3.equals(new Object()), is(equalTo(false)));
+        //CHECKSTYLE:OFF
+        assertThat(p1.equals(null), is(equalTo(false)));
+        assertThat(p2.equals(null), is(equalTo(false)));
+        assertThat(p3.equals(null), is(equalTo(false)));
+        //CHECKSTYLE:ON
+    }
+
+    @Test public void nullPackage() {
+        final Package sut = Package.NULL;
+        assertThat(sut.getBaseName(), is(""));
+        assertThat(sut.getFullQualifiedName(), is(""));
+        assertThat(sut.getParent(), is(sameInstance(sut)));
     }
 
 }
