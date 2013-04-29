@@ -19,6 +19,8 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 /**
+ * Read a given file, parse it and runs {@link Visitor} over the AST to collect class and
+ * interface data.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
@@ -47,6 +49,12 @@ final class JavaFileAnalyzer {
         this.parser.setKind(ASTParser.K_COMPILATION_UNIT);
     }
 
+    /**
+     * Analyze a file and add found classes and interfaces to the data collector.
+     *
+     * @param file file to analyze
+     * @throws IOException if any I/O error occurs
+     */
     public void analyze(final File file) throws IOException {
         final String source = FileUtils.readFileToString(file, DEFAULT_ENCODING);
         parser.setSource(source.toCharArray());

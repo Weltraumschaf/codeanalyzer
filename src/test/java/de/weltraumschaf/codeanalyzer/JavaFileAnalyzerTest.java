@@ -23,6 +23,7 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
+ * Tests for {@link JavaFileAnalyzer} and implicit for {@link Visitor}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
