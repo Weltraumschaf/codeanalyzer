@@ -18,10 +18,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.io.FileUtils;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 
 /**
  * Main application class.
@@ -60,7 +56,7 @@ public final class App {
      * @param out print stream for STDOUT
      * @param err print stream for STDERR
      */
-    public App(final List<String> args, final PrintStream out, final PrintStream err) {
+    private App(final List<String> args, final PrintStream out, final PrintStream err) {
         super();
         this.args = args;
         this.out = out;

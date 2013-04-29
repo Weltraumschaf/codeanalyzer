@@ -106,7 +106,26 @@ abstract class Unit {
         return getFullQualifiedName();
     }
 
+    /**
+     * Describes the visibility of a {@link Unit}.
+     */
     public static enum Visibility {
-        PRIVATE, PACKAGE, PROTECTED, PUBLIC;
+        /**
+         * Private.
+         */
+        PRIVATE,
+        /**
+         * Package private.
+         */
+        PACKAGE,
+        /**
+         * Protected.
+         */
+        PROTECTED,
+        /**
+         * Public.
+         */
+        PUBLIC;
     }
+
 }

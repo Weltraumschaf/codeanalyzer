@@ -59,9 +59,6 @@ final class JavaFileAnalyzer {
         final String source = FileUtils.readFileToString(file, DEFAULT_ENCODING);
         parser.setSource(source.toCharArray());
         final CompilationUnit compilationUnit = (CompilationUnit) parser.createAST(null);
-        compilationUnit.accept(new Visitor(data,
-                Package.create(compilationUnit.getPackage().getName()),
-                compilationUnit,
-                file));
+        compilationUnit.accept(new Visitor(data, compilationUnit, file));
     }
 }

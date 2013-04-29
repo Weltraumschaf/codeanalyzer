@@ -25,28 +25,50 @@ import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
+ * Visits the AST from a parsed Java file.
+ *
+ * Each compilation unit (from file) get an own instance of a visitor.
+ * The found data is collected by a shared {@link UnitCollector}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 final class Visitor extends ASTVisitor {
 
+    /**
+     * Collect found classes and interfaces.
+     */
     private final UnitCollector data;
+    /**
+     * Visited code was declared in this package.
+     */
     private final Package pkg;
-    private final CompilationUnit cu;
+    /**
+     * Used to create the position from.
+     */
+    private final CompilationUnit compilationUnit;
+    /**
+     * Used to create the position from.
+     */
     private final File file;
-
-    public Visitor(final UnitCollector data, final Package pkg, final CompilationUnit cu, final File file) {
-        super();
-        this.data = data;
-        this.pkg = pkg;
-        this.cu = cu;
-        this.file = file;
-    }
-
     /**
      * Maps Type to their package.
      */
     private final Map<String, String> imports = Maps.newHashMap();
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param data reference to data collector shared over multiple visitors
+     * @param compilationUnit according to the parsed file, used to create a {@link Position} from
+     * @param file used to create a {@link Position} from
+     */
+    public Visitor(final UnitCollector data, final CompilationUnit compilationUnit, final File file) {
+        super();
+        this.data = data;
+        this.compilationUnit = compilationUnit;
+        this.file = file;
+        this.pkg = Package.create(this.compilationUnit.getPackage().getName());
+    }
 
     @Override
     public boolean visit(ImportDeclaration node) {
@@ -58,21 +80,19 @@ final class Visitor extends ASTVisitor {
 
     @Override
     public boolean visit(final TypeDeclaration node) {
-        final Unit unit;
-
 //        Type sup = node.getSuperclassType();
 //        TypeDeclaration[] types = node.getTypes();
 
         if (node.isInterface()) {
-            unit = visitInterfaceDeclaration(node);
+            visitInterfaceDeclaration(node);
         } else {
-            unit = visitClassDeclaration(node);
+            visitClassDeclaration(node);
         }
 
         return true;
     }
 
-    private Unit visitInterfaceDeclaration(final TypeDeclaration node) {
+    private void visitInterfaceDeclaration(final TypeDeclaration node) {
         final Interface iface = new Interface(pkg, node.getName().toString(), determineVisibility(node));
         iface.setPosition(createPosition(node.getName()));
 
@@ -81,11 +101,9 @@ final class Visitor extends ASTVisitor {
         } else {
             data.addInterface(iface);
         }
-
-        return iface;
     }
 
-    private Unit visitClassDeclaration(final TypeDeclaration node) {
+    private void visitClassDeclaration(final TypeDeclaration node) {
         final Class clazz = new Class(
             pkg,
             node.getName().toString(),
@@ -113,8 +131,6 @@ final class Visitor extends ASTVisitor {
 
             implemented.addImplementation(clazz);
         }
-
-        return clazz;
     }
 
     private boolean determineAbstractness(final TypeDeclaration node) {
@@ -145,6 +161,6 @@ final class Visitor extends ASTVisitor {
     }
 
     private Position createPosition(final Name name) {
-        return new Position(file.getAbsolutePath(), cu.getLineNumber(name.getStartPosition()));
+        return new Position(file.getAbsolutePath(), compilationUnit.getLineNumber(name.getStartPosition()));
     }
 }

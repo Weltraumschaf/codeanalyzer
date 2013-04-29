@@ -30,7 +30,8 @@ final class UnitCollector {
 
     public Interface getInterface(final String fullQualifiedName) {
         if (!hasInterface(fullQualifiedName)) {
-            throw new IllegalArgumentException(String.format("Does not have interface with name %s!", fullQualifiedName));
+            throw new IllegalArgumentException(
+                String.format("Does not have interface with name %s!", fullQualifiedName));
         }
         return interfaces.get(fullQualifiedName);
     }
@@ -38,7 +39,8 @@ final class UnitCollector {
     public void addInterface(final Interface i) {
         final String fullQualifiedName = i.getFullQualifiedName();
         if (hasInterface(fullQualifiedName)) {
-            throw new IllegalArgumentException(String.format("Does already have interface with name %s!", fullQualifiedName));
+            throw new IllegalArgumentException(
+                String.format("Does already have interface with name %s!", fullQualifiedName));
         }
         interfaces.put(fullQualifiedName, i);
     }
@@ -57,7 +59,8 @@ final class UnitCollector {
     public void addClass(final Class c) {
         final String fullQualifiedName = c.getFullQualifiedName();
         if (hasInterface(fullQualifiedName)) {
-            throw new IllegalArgumentException(String.format("Does already have interface with name %s!", fullQualifiedName));
+            throw new IllegalArgumentException(
+                String.format("Does already have interface with name %s!", fullQualifiedName));
         }
         classes.put(fullQualifiedName, c);
     }
