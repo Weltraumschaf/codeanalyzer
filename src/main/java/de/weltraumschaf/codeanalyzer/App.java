@@ -34,8 +34,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class App {
-    private static final String DEFAULT_ENCODING = "utf-8";
+public final class App {
 
     /**
      * Command line arguments.
@@ -45,10 +44,6 @@ public class App {
      * Collect parsed units.
      */
     private final UnitCollector data = new UnitCollector();
-    /**
-     * Parses the code.
-     */
-    private final ASTParser parser = ASTParser.newParser(AST.JLS4);
     /**
      * STDOUT.
      */
@@ -107,17 +102,10 @@ public class App {
     }
 
     private void collectData(final Collection<File> files) throws IOException {
+        final JavaFileAnalyzer analyzer = new JavaFileAnalyzer(data);
         for (final File file : files) {
-            parseFile(file);
+            analyzer.analyze(file);
         }
     }
 
-    private void parseFile(final File file) throws IOException {
-        final String source = FileUtils.readFileToString(file, DEFAULT_ENCODING);
-        parser.setSource(source.toCharArray());
-        parser.setKind(ASTParser.K_COMPILATION_UNIT);
-        final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-        final Package pkg = Package.create(cu.getPackage().getName().toString());
-        cu.accept(new Visitor(data, pkg, cu, file));
-    }
 }
