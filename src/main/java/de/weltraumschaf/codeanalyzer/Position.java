@@ -12,28 +12,77 @@
 
 package de.weltraumschaf.codeanalyzer;
 
+import java.util.Objects;
+
 /**
+ * Immutable represents a source code position consisting of a file name and line number.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 final class Position {
 
-    static final Position DEFAULT = new Position("", 0);
-
+    /**
+     * Default position.
+     */
+    static final Position DEFAULT = new Position("unknown", 0);
+    /**
+     * File name.
+     */
     private final String fileName;
+    /**
+     * Line number.
+     */
     private final int lineNumber;
 
-    public Position(String fileName, int lineNumber) {
+    /**
+     * Dedicated constructor.
+     *
+     * @param fileName file name
+     * @param lineNumber line number
+     */
+    public Position(final String fileName, final int lineNumber) {
+        super();
         this.fileName = fileName;
         this.lineNumber = lineNumber;
     }
 
+    /**
+     * Get the file name.
+     *
+     * @return file name string
+     */
     public String getFileName() {
         return fileName;
     }
 
+    /**
+     * Get the line number.
+     *
+     * @return line number
+     */
     public int getLineNumber() {
         return lineNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fileName, lineNumber);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (!(obj instanceof Position)) {
+            return false;
+        }
+
+        final Position other = (Position) obj;
+        return Objects.equals(fileName, other.fileName)
+            && Objects.equals(lineNumber, other.lineNumber);
+    }
+
+    @Override
+    public String toString() {
+        return fileName + ":" + lineNumber;
     }
 
 }

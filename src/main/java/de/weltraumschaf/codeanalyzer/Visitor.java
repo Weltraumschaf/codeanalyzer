@@ -11,13 +11,17 @@
  */
 package de.weltraumschaf.codeanalyzer;
 
+import com.google.common.collect.Maps;
 import de.weltraumschaf.codeanalyzer.Unit.Visibility;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
@@ -39,14 +43,25 @@ final class Visitor extends ASTVisitor {
         this.file = file;
     }
 
+    /**
+     * Maps Type to their package.
+     */
+    private final Map<String, String> imports = Maps.newHashMap();
+
+    @Override
+    public boolean visit(ImportDeclaration node) {
+        final String name = node.getName().toString();
+        imports.put(Package.splitBaseName(name), Package.splitParentName(name));
+        return true;
+    }
+
+
     @Override
     public boolean visit(final TypeDeclaration node) {
         final Unit unit;
 
 //        Type sup = node.getSuperclassType();
-//        List ifs = node.superInterfaceTypes();
 //        TypeDeclaration[] types = node.getTypes();
-
 
         if (node.isInterface()) {
             unit = visitInterfaceDeclaration(node);
@@ -54,13 +69,19 @@ final class Visitor extends ASTVisitor {
             unit = visitClassDeclaration(node);
         }
 
-        unit.setPosition(createPosition(node.getName()));
         return true;
     }
 
     private Unit visitInterfaceDeclaration(final TypeDeclaration node) {
         final Interface iface = new Interface(pkg, node.getName().toString(), determineVisibility(node));
-        data.addInterface(iface);
+        iface.setPosition(createPosition(node.getName()));
+
+        if (data.hasInterface(iface.getFullQualifiedName())) {
+            data.getInterface(iface.getFullQualifiedName()).update(iface);
+        } else {
+            data.addInterface(iface);
+        }
+
         return iface;
     }
 
@@ -70,7 +91,29 @@ final class Visitor extends ASTVisitor {
             node.getName().toString(),
             determineVisibility(node),
             determineAbstractness(node));
+        clazz.setPosition(createPosition(node.getName()));
         data.addClass(clazz);
+
+        for (final SimpleType t : (List<SimpleType>) node.superInterfaceTypes()) {
+            final String name = t.getName().toString();
+            Interface implemented;
+
+            if (data.hasInterface(name)) {
+                implemented = data.getInterface(name);
+            } else {
+                if (imports.containsKey(name)) {
+                    implemented = new Interface(Package.create(imports.get(name)), name);
+                } else {
+                    // No imports -> same package.
+                    implemented = new Interface(pkg, name);
+                }
+
+                data.addInterface(implemented);
+            }
+
+            implemented.addImplementation(clazz);
+        }
+
         return clazz;
     }
 

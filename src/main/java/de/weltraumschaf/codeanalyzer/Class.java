@@ -62,16 +62,12 @@ final class Class extends Unit {
 
     @Override
     public void update(final Unit unit) {
-        if (equals(unit)) {
-            return;
-        }
-        
         if (!(unit instanceof Class)) {
             return;
         }
 
+        super.update(unit);
         final Class other = (Class) unit;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

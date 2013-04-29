@@ -25,6 +25,10 @@ final class Interface extends Unit {
     private final Map<String, Interface> extendingInterfaces = Maps.newHashMap();
     private final Map<String, Class> implementations = Maps.newHashMap();
 
+    public Interface(final Package containingPackage, final String name) {
+        this(containingPackage, name, Visibility.PACKAGE);
+    }
+
     public Interface(final Package containingPackage, final String name, final Visibility visibility) {
         super(containingPackage, name, visibility);
     }
@@ -47,20 +51,17 @@ final class Interface extends Unit {
     }
 
     public void addImplementation(final Class implementation) {
+        implementation.implement(this);
         implementations.put(implementation.getFullQualifiedName(), implementation);
     }
 
     @Override
     public void update(final Unit unit) {
-        if (equals(unit)) {
-            return;
-        }
-
         if (!(unit instanceof Interface)) {
             return;
         }
 
+        super.update(unit);
         final Interface other = (Interface) unit;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

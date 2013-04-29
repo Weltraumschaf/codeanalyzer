@@ -29,7 +29,10 @@ abstract class Unit {
      * Name of the class or interface.
      */
     private final String name;
-    private final Visibility visibility;
+    /**
+     * Visibility of unit.
+     */
+    private Visibility visibility;
     /**
      * Position in the source code where it is declared.
      */
@@ -71,7 +74,14 @@ abstract class Unit {
      *
      * @param unit unit to get new information from
      */
-    public abstract void update(final Unit unit);
+    public void update(final Unit unit) {
+        if (equals(unit)) {
+            return;
+        }
+
+        visibility = unit.visibility;
+        position = unit.position;
+    }
 
     @Override
     public int hashCode() {
@@ -85,7 +95,10 @@ abstract class Unit {
         }
 
         final Unit other = (Unit) obj;
-        return Objects.equal(containingPackage, other.containingPackage) && Objects.equal(name, other.name);
+        return Objects.equal(containingPackage, other.containingPackage)
+            && Objects.equal(name, other.name)
+            && Objects.equal(visibility, other.visibility)
+            && Objects.equal(position, other.position);
     }
 
     @Override

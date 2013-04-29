@@ -12,6 +12,9 @@
 
 package de.weltraumschaf.codeanalyzer.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Parsed in the unit tests.
  *
@@ -20,6 +23,8 @@ package de.weltraumschaf.codeanalyzer.test;
 abstract class AbstractOne implements One {
 
     @Override
-    public void foo() {}
+    public void foo() {
+        final Map<String, String> map = new HashMap<String, String>();
+    }
 
 }
