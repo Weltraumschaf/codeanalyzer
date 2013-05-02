@@ -9,123 +9,62 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.codeanalyzer;
 
-import com.google.common.base.Objects;
-
 /**
- * Abstract base class for {@link Class} and {@link Interface}.
+ * Interface for a found unit like classes or interfaces.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-abstract class Unit {
+public interface Unit {
 
     /**
-     * Package in which the unit is declared.
+     * Get the containing package.
+     *
+     * @return containing package
      */
-    private final Package containingPackage;
+    Package getContainingPackage();
+
     /**
-     * Name of the class or interface.
+     * Get the name.
+     *
+     * @return base name w/o package
      */
-    private final String name;
+    String getName();
+
     /**
-     * Visibility of unit.
+     * Get the full qualified name.
+     *
+     * @return package name combined w/ name
      */
-    private Visibility visibility;
+    String getFullQualifiedName();
+
     /**
-     * Position in the source code where it is declared.
+     * Get the position where in source the unit was found.
+     *
+     * @return position object
      */
-    private Position position = Position.DEFAULT;
+    Position getPosition();
 
-    public Unit(final Package containingPackage, final String name, final Visibility visibility) {
-        super();
-        this.containingPackage = containingPackage;
-        this.name = name;
-        this.visibility = visibility;
-    }
+    /**
+     * Set the position.
+     *
+     * @param position where the unit was found
+     */
+    void setPosition(Position position);
 
-    public Package getContainingPackage() {
-        return containingPackage;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getFullQualifiedName() {
-        return containingPackage.getFullQualifiedName() + Package.SEPARATOR + name;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public Visibility getVisibility() {
-        return visibility;
-    }
+    /**
+     * Visibility of the unit.
+     *
+     * @return visibility of the unit
+     */
+    Visibility getVisibility();
 
     /**
      * Took an other unit and checks if it has newer information than itself.
      *
-     * @param unit unit to get new information from
+     * @param other unit to get new information from
      */
-    public void update(final Unit unit) {
-        if (equals(unit)) {
-            return;
-        }
-
-        visibility = unit.visibility;
-        position = unit.position;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(containingPackage, name);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Unit)) {
-            return false;
-        }
-
-        final Unit other = (Unit) obj;
-        return Objects.equal(containingPackage, other.containingPackage)
-            && Objects.equal(name, other.name)
-            && Objects.equal(visibility, other.visibility)
-            && Objects.equal(position, other.position);
-    }
-
-    @Override
-    public String toString() {
-        return getFullQualifiedName();
-    }
-
-    /**
-     * Describes the visibility of a {@link Unit}.
-     */
-    public static enum Visibility {
-        /**
-         * Private.
-         */
-        PRIVATE,
-        /**
-         * Package private.
-         */
-        PACKAGE,
-        /**
-         * Protected.
-         */
-        PROTECTED,
-        /**
-         * Public.
-         */
-        PUBLIC;
-    }
+    void update(Unit other);
 
 }

@@ -9,12 +9,29 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.codeanalyzer.reports;
+package de.weltraumschaf.codeanalyzer;
 
 /**
+ * Describes the visibility of a {@link AbstractUnit}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class Markdown implements Formatter {
+public enum Visibility {
 
+    /**
+     * Private.
+     */
+    PRIVATE,
+    /**
+     * Package private.
+     */
+    PACKAGE,
+    /**
+     * Protected.
+     */
+    PROTECTED,
+    /**
+     * Public.
+     */
+    PUBLIC;
 }

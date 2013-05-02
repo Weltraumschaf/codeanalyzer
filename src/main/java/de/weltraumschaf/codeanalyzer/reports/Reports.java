@@ -13,17 +13,17 @@ package de.weltraumschaf.codeanalyzer.reports;
 
 /**
  * Factory to create {@link Report reports}.
- * 
+ *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class Reports {
-    
+
     private Reports() {
         super();
     }
-    
+
     public static Report createPackageEncapsulation() {
         return new PackageEncapsulation();
     }
-    
+
 }

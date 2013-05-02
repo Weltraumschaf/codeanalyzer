@@ -89,6 +89,11 @@ public final class App {
         return 0;
     }
 
+    /**
+     * Read all files from the directory given as first CLI argument.
+     *
+     * @return collection of files, never {@code null}, maybe empty collection
+     */
     private Collection<File> readSourceFiles() {
         if (args.isEmpty()) {
             return Collections.emptyList();
@@ -97,6 +102,12 @@ public final class App {
         return new FileFinder().findJava(new File(args.get(0)));
     }
 
+    /**
+     * Analyzes the found files and collect data from them.
+     *
+     * @param files files to inspect
+     * @throws IOException if IO errors occurs
+     */
     private void collectData(final Collection<File> files) throws IOException {
         final JavaFileAnalyzer analyzer = new JavaFileAnalyzer(data);
         for (final File file : files) {

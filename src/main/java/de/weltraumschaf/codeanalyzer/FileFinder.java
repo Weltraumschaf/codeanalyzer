@@ -36,7 +36,9 @@ final class FileFinder {
      *
      * @param baseDirectory directory to crawl
      * @return list of directories
+     * CHECKSTYLE:OFF
      * @throws NullPointerException if {@code null} passed in
+     * CHECKSTYLE:ON
      */
     public List<File> findJava(final File baseDirectory) {
         if (null == baseDirectory) {

@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-final class Class extends Unit {
+public final class Class extends BaseUnit {
 
     /**
      * Holds the implemented interfaces.

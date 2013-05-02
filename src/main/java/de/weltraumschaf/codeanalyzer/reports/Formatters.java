@@ -13,26 +13,26 @@ package de.weltraumschaf.codeanalyzer.reports;
 
 /**
  * Factory to create {@link Formatter formatters}.
- * 
+ *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class Formatters {
-   
+
     /**
      * Hidden for static facotry.
      */
     private Formatters() {
         super();
     }
-    
+
     /**
      * Creates a <a href="http://daringfireball.net/projects/markdown/">markdown
      * </a> formatter.
-     * 
+     *
      * @return always new instance
      */
     public static Formatter createMarkdown() {
         return new Markdown();
     }
-    
+
 }

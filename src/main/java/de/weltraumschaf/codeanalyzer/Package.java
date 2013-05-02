@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.dom.Name;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 // CHECKSTYLE:OFF
-class Package { // Must not be final because Null() extends
+public class Package { // Must not be final because Null() extends
 // CHECKSTYLE:ON
     /**
      * Package name separator.

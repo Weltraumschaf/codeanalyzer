@@ -18,7 +18,7 @@ import de.weltraumschaf.codeanalyzer.UnitCollector;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public interface Report {
-    
+
     void setData(UnitCollector data);
     String generate();
 

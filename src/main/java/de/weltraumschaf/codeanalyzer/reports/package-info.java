@@ -9,12 +9,8 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.codeanalyzer.reports;
 
 /**
- *
- * @author Sven Strittmatter <weltraumschaf@googlemail.com>
+ * Package for report generation and formating.
  */
-class Markdown implements Formatter {
-
-}
+package de.weltraumschaf.codeanalyzer.reports;

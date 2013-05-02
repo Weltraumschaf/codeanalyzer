@@ -16,5 +16,5 @@ package de.weltraumschaf.codeanalyzer.reports;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public interface Formatter {
-    
+
 }

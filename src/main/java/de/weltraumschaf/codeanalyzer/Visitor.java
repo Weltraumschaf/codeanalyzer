@@ -12,7 +12,6 @@
 package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.collect.Maps;
-import de.weltraumschaf.codeanalyzer.Unit.Visibility;
 import java.io.File;
 import java.util.List;
 import java.util.Map;

@@ -19,7 +19,7 @@ import java.util.Objects;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-final class Position {
+public final class Position {
 
     /**
      * Default position.
