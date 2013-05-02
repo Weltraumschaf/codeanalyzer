@@ -11,10 +11,26 @@
  */
 package de.weltraumschaf.codeanalyzer.reports;
 
+import de.weltraumschaf.codeanalyzer.Class;
+import de.weltraumschaf.codeanalyzer.Interface;
+
 /**
+ * Formatter for a report.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public interface Formatter {
+
+    String TAB = "    ";
+
+    public String title(String title);
+
+    public String text(String text);
+
+    public String iface(Interface iface);
+
+    public String iementation(Class clazz);
+
+    public Object nl();
 
 }

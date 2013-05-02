@@ -13,6 +13,7 @@
 package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.collect.Maps;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -46,13 +47,13 @@ public final class Interface extends BaseUnit {
     private final Map<String, Class> implementations = Maps.newHashMap();
 
     /**
-     * Convenience constructor which initializes the visibility w/ {@link Visibility#PACKAGE}.
+     * Convenience constructor which initializes the visibility w/ {@link Visibility#PUBLIC}.
      *
      * @param containingPackage package which contains the unit
      * @param name of the interface
      */
     public Interface(final Package containingPackage, final String name) {
-        this(containingPackage, name, Visibility.PACKAGE);
+        this(containingPackage, name, Visibility.PUBLIC);
     }
 
     /**
@@ -99,6 +100,10 @@ public final class Interface extends BaseUnit {
         implementations.put(implementation.getFullQualifiedName(), implementation);
     }
 
+    public Collection<Class> getImplementations() {
+        return implementations.values();
+    }
+
     @Override
     public void update(final Unit unit) {
         if (!(unit instanceof Interface)) {
@@ -108,4 +113,5 @@ public final class Interface extends BaseUnit {
         super.update(unit);
 //        final Interface other = (Interface) unit;
     }
+
 }

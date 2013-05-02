@@ -19,10 +19,24 @@ package de.weltraumschaf.codeanalyzer.reports;
 public final class Formatters {
 
     /**
-     * Hidden for static facotry.
+     * Default formatter.
+     */
+    private static final Formatter DEFAULT = createTextPlain();
+
+    /**
+     * Hidden for static factory.
      */
     private Formatters() {
         super();
+    }
+
+    /**
+     * Creates a default formatter.
+     *
+     * @return always same instance
+     */
+    public static Formatter createDefault() {
+        return  DEFAULT;
     }
 
     /**
@@ -33,6 +47,10 @@ public final class Formatters {
      */
     public static Formatter createMarkdown() {
         return new Markdown();
+    }
+
+    public static Formatter createTextPlain() {
+        return new PlainText();
     }
 
 }

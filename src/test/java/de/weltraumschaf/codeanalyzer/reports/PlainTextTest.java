@@ -9,29 +9,37 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
+
 package de.weltraumschaf.codeanalyzer.reports;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 /**
- * Factory to create {@link Report reports}.
+ * Unit tests for {@link PlainText}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public final class Reports {
+public class PlainTextTest {
 
-    /**
-     * Hidden because pure static factory.
-     */
-    private Reports() {
-        super();
+    @Test
+    public void testTitle() {
     }
 
-    /**
-     * Gives a {@link Report} which analyzes {@link PackageEncapsulation package encapsulation}.
-     *
-     * @return always new instance
-     */
-    public static Report createPackageEncapsulation() {
-        return new PackageEncapsulation();
+    @Test
+    public void testText() {
+    }
+
+    @Test
+    public void testIface() {
+    }
+
+    @Test
+    public void testIementation() {
+    }
+
+    @Test
+    public void testNl() {
     }
 
 }

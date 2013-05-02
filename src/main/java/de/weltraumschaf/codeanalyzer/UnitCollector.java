@@ -13,6 +13,7 @@
 package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.collect.Maps;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -90,6 +91,10 @@ public final class UnitCollector {
         }
 
         interfaces.put(fullQualifiedName, iface);
+    }
+
+    public Collection<Interface> getInterfaces() {
+        return interfaces.values();
     }
 
     /**

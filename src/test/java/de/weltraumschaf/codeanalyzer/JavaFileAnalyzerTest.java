@@ -47,7 +47,7 @@ public class JavaFileAnalyzerTest {
         assertThat(abstractOne.doesImplement("de.weltraumschaf.codeanalyzer.test.One"), is(true));
         final Interface one = data.getInterface("de.weltraumschaf.codeanalyzer.test.One");
         assertThat(one, notNullValue());
-        assertThat(one.getVisibility(), is(Visibility.PACKAGE));
+        assertThat(one.getVisibility(), is(Visibility.PUBLIC));
         assertThat(one.getPosition(), equalTo(Position.DEFAULT));
     }
 

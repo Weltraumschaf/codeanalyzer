@@ -9,34 +9,37 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
+
 package de.weltraumschaf.codeanalyzer.reports;
 
+import de.weltraumschaf.codeanalyzer.Class;
 import de.weltraumschaf.codeanalyzer.Interface;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class Markdown implements Formatter {
+class PlainText implements Formatter {
+
 
     @Override
-    public String title(String title) {
-        return String.format("# %s%n%n", title);
+    public String title(final String title) {
+        return String.format("%s%n%n", title);
     }
 
     @Override
     public String text(final String text) {
-        return String.format("%s%n%n", text);
+        return String.format(" %s%n", text);
     }
 
     @Override
-    public String iface(Interface iface) {
-        return String.format(TAB + "%s %s: ", iface.getVisibility(), iface.getFullQualifiedName());
+    public String iface(final Interface iface) {
+        return String.format("%s %s%n", iface.getVisibility(), iface.getFullQualifiedName());
     }
 
     @Override
-    public String iementation(final de.weltraumschaf.codeanalyzer.Class clazz) {
-        return String.format(TAB + "  +- %s %s%n", clazz.getVisibility(), clazz.getFullQualifiedName());
+    public String iementation(final Class clazz) {
+        return String.format("  +- %s %s%n", clazz.getVisibility(), clazz.getFullQualifiedName());
     }
 
     @Override

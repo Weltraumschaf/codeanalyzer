@@ -12,7 +12,7 @@
 
 package de.weltraumschaf.codeanalyzer;
 
-import java.util.Objects;
+import com.google.common.base.Objects;
 
 /**
  * Immutable represents a source code position consisting of a file name and line number.
@@ -66,7 +66,7 @@ public final class Position {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileName, lineNumber);
+        return Objects.hashCode(fileName, lineNumber);
     }
 
     @Override
@@ -76,8 +76,8 @@ public final class Position {
         }
 
         final Position other = (Position) obj;
-        return Objects.equals(fileName, other.fileName)
-            && Objects.equals(lineNumber, other.lineNumber);
+        return Objects.equal(fileName, other.fileName)
+            && Objects.equal(lineNumber, other.lineNumber);
     }
 
     @Override

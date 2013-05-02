@@ -11,6 +11,9 @@
  */
 package de.weltraumschaf.codeanalyzer;
 
+import de.weltraumschaf.codeanalyzer.reports.Formatters;
+import de.weltraumschaf.codeanalyzer.reports.Report;
+import de.weltraumschaf.codeanalyzer.reports.Reports;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -36,10 +39,6 @@ public final class App {
      * Command line arguments.
      */
     private final List<String> args;
-    /**
-     * Collect parsed units.
-     */
-    private final UnitCollector data = new UnitCollector();
     /**
      * STDOUT.
      */
@@ -80,12 +79,16 @@ public final class App {
      */
     private int run() {
         final Collection<File> files = readSourceFiles();
+        final UnitCollector data;
+
         try {
-            collectData(files);
+            data = collectData(files);
         } catch (IOException ex) {
             err.println(ex.getMessage());
             return 1;
         }
+
+        generateReport(data);
         return 0;
     }
 
@@ -108,11 +111,29 @@ public final class App {
      * @param files files to inspect
      * @throws IOException if IO errors occurs
      */
-    private void collectData(final Collection<File> files) throws IOException {
+    private UnitCollector collectData(final Collection<File> files) throws IOException {
+        final UnitCollector data = new UnitCollector();
         final JavaFileAnalyzer analyzer = new JavaFileAnalyzer(data);
-        for (final File file : files) {
-            analyzer.analyze(file);
-        }
+
+//        for (final File file : files) {
+//            analyzer.analyze(file);
+//        }
+
+        generateTestData(data);
+        return data;
+    }
+
+    private void generateReport(final UnitCollector data) {
+        final Report report = Reports.createPackageEncapsulation();
+        report.setData(data);
+        out.print(report.generate());
+    }
+
+    private void generateTestData(final UnitCollector data) {
+        final Interface ifaceFoo = new Interface(Package.create("foo.bar.baz"), "Foo");
+        data.addInterface(ifaceFoo);
+        final Interface ifaceBar = new Interface(Package.create("foo.bar.baz"), "Bar");
+        data.addInterface(ifaceBar);
     }
 
 }

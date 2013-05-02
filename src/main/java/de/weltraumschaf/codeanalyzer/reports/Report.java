@@ -14,12 +14,29 @@ package de.weltraumschaf.codeanalyzer.reports;
 import de.weltraumschaf.codeanalyzer.UnitCollector;
 
 /**
+ * Generates reports.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public interface Report {
 
+    /**
+     * Analyzed data.
+     *
+     * @param data holds the analyzed data.
+     */
     void setData(UnitCollector data);
+    /**
+     * Formatter to generate output.
+     *
+     * @param fmt formatter instance
+     */
+    void setFormatter(Formatter fmt);
+    /**
+     * Generates report and returns a formatted string.
+     *
+     * @return
+     */
     String generate();
 
 }

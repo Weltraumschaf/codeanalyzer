@@ -117,7 +117,7 @@ abstract class BaseUnit implements Unit {
 
     @Override
     public String toString() {
-        return getFullQualifiedName();
+        return getFullQualifiedName() + " " + visibility;
     }
 
 }

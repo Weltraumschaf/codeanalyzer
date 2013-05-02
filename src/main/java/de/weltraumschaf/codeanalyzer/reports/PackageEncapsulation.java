@@ -11,7 +11,10 @@
  */
 package de.weltraumschaf.codeanalyzer.reports;
 
+import de.weltraumschaf.codeanalyzer.Interface;
+import de.weltraumschaf.codeanalyzer.Class;
 import de.weltraumschaf.codeanalyzer.UnitCollector;
+import java.util.Collection;
 
 /**
  *
@@ -19,14 +22,59 @@ import de.weltraumschaf.codeanalyzer.UnitCollector;
  */
 class PackageEncapsulation implements Report {
 
+    private UnitCollector data;
+    private Formatter formatt = Formatters.createDefault();
+
+    public PackageEncapsulation() {
+        this(Formatters.createDefault());
+    }
+
+    public PackageEncapsulation(final Formatter fmt) {
+        super();
+
+        if (null == fmt) {
+            throw new NullPointerException("Formatter must not be null!");
+        }
+
+        this.formatt = fmt;
+    }
+
+
     @Override
-    public void setData(UnitCollector data) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setData(final UnitCollector data) {
+        this.data = data;
+    }
+
+    @Override
+    public void setFormatter(final Formatter fmt) {
+        this.formatt = fmt;
     }
 
     @Override
     public String generate() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        final StringBuffer buf = new StringBuffer();
+        buf.append(formatt.title("Package encapsulation"));
+        final Collection<Interface> ifaces = data.getInterfaces();
+
+        if (ifaces.isEmpty()) {
+            buf.append(formatt.text("No data to generate report for."));
+            return buf.toString();
+        }
+
+        for (final Interface iface : ifaces) {
+            buf.append(formatt.iface(iface));
+            final Collection<Class> implementations = iface.getImplementations();
+
+            if (implementations.isEmpty()) {
+                buf.append(formatt.text("No implementations."));
+            } else {
+                for (final Class clazz : implementations) {
+                    buf.append(formatt.iementation(clazz));
+                }
+            }
+        }
+
+        return buf.toString();
     }
 
 }
