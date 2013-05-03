@@ -16,16 +16,12 @@ import de.weltraumschaf.codeanalyzer.Class;
 import de.weltraumschaf.codeanalyzer.Interface;
 
 /**
+ * Formatter to generate plain text reports.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class PlainText implements Formatter {
+class PlainText extends BaseFormatter {
 
-    private String trim(final String input) {
-        return null == input
-                    ? ""
-                    : input.trim();
-    }
     @Override
     public String title(final String title) {
         return String.format("%s%n%n", trim(title));
@@ -41,7 +37,7 @@ class PlainText implements Formatter {
         if (null == iface) {
             throw new NullPointerException("Interface must not be null!");
         }
-        
+
         return String.format("%s %s%n", iface.getVisibility(), iface.getFullQualifiedName());
     }
 

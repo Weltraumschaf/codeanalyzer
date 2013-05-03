@@ -22,10 +22,6 @@ import de.weltraumschaf.codeanalyzer.Interface;
 public interface Formatter {
 
     /**
-     * Spaces used as tabulator.
-     */
-    String TAB = "    ";
-    /**
      * Format a title.
      *
      * @param title to format
