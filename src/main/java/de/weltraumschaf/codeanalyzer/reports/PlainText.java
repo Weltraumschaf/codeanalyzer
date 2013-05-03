@@ -21,24 +21,36 @@ import de.weltraumschaf.codeanalyzer.Interface;
  */
 class PlainText implements Formatter {
 
-
+    private String trim(final String input) {
+        return null == input
+                    ? ""
+                    : input.trim();
+    }
     @Override
     public String title(final String title) {
-        return String.format("%s%n%n", title);
+        return String.format("%s%n%n", trim(title));
     }
 
     @Override
     public String text(final String text) {
-        return String.format(" %s%n", text);
+        return String.format(" %s%n", trim(text));
     }
 
     @Override
     public String iface(final Interface iface) {
+        if (null == iface) {
+            throw new NullPointerException("Interface must not be null!");
+        }
+        
         return String.format("%s %s%n", iface.getVisibility(), iface.getFullQualifiedName());
     }
 
     @Override
     public String implementation(final Class clazz) {
+        if (null == clazz) {
+            throw new NullPointerException("Class must not be null!");
+        }
+
         return String.format("  +- %s %s%n", clazz.getVisibility(), clazz.getFullQualifiedName());
     }
 
