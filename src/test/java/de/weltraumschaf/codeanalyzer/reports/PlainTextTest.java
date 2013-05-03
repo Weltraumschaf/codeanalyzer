@@ -73,7 +73,7 @@ public class PlainTextTest {
     @Test
     public void testIementation() {
         final Class clazz = new Class(Package.create("foo.bar"), "Baz");
-        assertThat(sut.implementation(clazz), is(equalTo("  +- PACKAGE foo.bar.Baz" + NL)));
+        assertThat(sut.implementation(clazz), is(equalTo(" +- PACKAGE foo.bar.Baz" + NL)));
     }
 
     @Test

@@ -56,4 +56,6 @@ public interface Formatter {
      */
     String nl();
 
+    String implementation();
+
 }

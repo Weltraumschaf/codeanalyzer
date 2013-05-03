@@ -91,10 +91,14 @@ class PackageEncapsulation implements Report {
             if (implementations.isEmpty()) {
                 buf.append(formatt.text("No implementations."));
             } else {
+                buf.append(formatt.implementation());
+
                 for (final Class clazz : implementations) {
                     buf.append(formatt.implementation(clazz));
                 }
             }
+
+            buf.append(formatt.nl());
         }
 
         return buf.toString();

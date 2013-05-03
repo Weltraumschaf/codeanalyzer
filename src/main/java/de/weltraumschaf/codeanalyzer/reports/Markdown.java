@@ -45,12 +45,17 @@ class Markdown extends BaseFormatter {
             throw new NullPointerException("Class must not be null!");
         }
 
-        return String.format(TAB + "  +- %s %s%n", clazz.getVisibility(), clazz.getFullQualifiedName());
+        return String.format(TAB + " +- %s %s%n", clazz.getVisibility(), clazz.getFullQualifiedName());
+    }
+
+    @Override
+    public String implementation() {
+        return String.format(" ^%n");
     }
 
     @Override
     public String nl() {
         return String.format("%n");
     }
-
+    
 }
