@@ -154,6 +154,14 @@ public final class App {
         final Interface ifaceBar = new Interface(pkg, "Bar");
         data.addInterface(ifaceBar);
         classFooImplB.implement(ifaceBar);
+
+        final Interface ifaceBaz = new Interface(pkg, "Baz");
+        data.addInterface(ifaceBaz);
+        ifaceBaz.extend(ifaceBar);
+
+        final Class classBazImplA = new Class(pkg, "BazImplA");
+        data.addClass(classBazImplA);
+        classBazImplA.implement(ifaceBaz);
     }
 
 }

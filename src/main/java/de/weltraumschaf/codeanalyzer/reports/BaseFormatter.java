@@ -19,10 +19,13 @@ package de.weltraumschaf.codeanalyzer.reports;
  */
 abstract class BaseFormatter implements Formatter {
 
+    private static final String DEFAULT_INDENTATION_PATTERN = " ";
     /**
      * Spaces used as tabulator.
      */
     protected static final String TAB = "    ";
+    private int indentionLevel = 0;
+    private String indentationPattern = DEFAULT_INDENTATION_PATTERN;
 
     /**
      * Null safe trim method.
@@ -34,6 +37,52 @@ abstract class BaseFormatter implements Formatter {
         return null == input
                     ? ""
                     : input.trim();
+    }
+
+
+
+    @Override
+    public void setIndentationPattern(final String pattern) {
+        if (indentionLevel > 0) {
+            throw new IllegalStateException(
+                String.format("You can only change indnetation pattern if indentation level is 0! Current level is %d.",
+                              indentionLevel));
+        }
+
+        if (null == pattern) {
+            throw new NullPointerException("Pattern must not be null!");
+        }
+
+        if (pattern.isEmpty()) {
+            throw new IllegalArgumentException("Pattern must not be empty string!");
+        }
+
+        indentationPattern = pattern;
+    }
+
+    @Override
+    public void indent() {
+        ++indentionLevel;
+    }
+
+    @Override
+    public void exindent() {
+        --indentionLevel;
+
+        if (indentionLevel < 0) {
+            indentionLevel = 0;
+        }
+    }
+
+    @Override
+    public String indention() {
+        final StringBuilder buf = new StringBuilder();
+
+        for (int i = 0; i < indentionLevel; ++i) {
+            buf.append(indentationPattern);
+        }
+
+        return buf.toString();
     }
 
 }
