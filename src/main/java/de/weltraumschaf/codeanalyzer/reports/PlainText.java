@@ -38,7 +38,10 @@ class PlainText extends BaseFormatter {
             throw new NullPointerException("Interface must not be null!");
         }
 
-        return String.format("%s %s%n", iface.getVisibility(), iface.getFullQualifiedName());
+        return String.format("I %s %s (%s)%n",
+            iface.getVisibility(),
+            iface.getFullQualifiedName(),
+            iface.getPosition());
     }
 
     @Override
@@ -47,14 +50,22 @@ class PlainText extends BaseFormatter {
             throw new NullPointerException("Class must not be null!");
         }
 
-        return String.format(" +- %s %s%n", clazz.getVisibility(), clazz.getFullQualifiedName());
+        final String format;
+
+        if (clazz.isAbstract()) {
+            format = "C ABSTRACT %s %s (%s)%n";
+        } else {
+            format = "C %s %s (%s)%n";
+        }
+
+        return String.format(format, clazz.getVisibility(), clazz.getFullQualifiedName(), clazz.getPosition());
     }
 
     @Override
     public String implementation() {
         return String.format(" ^%n");
     }
-    
+
     @Override
     public String nl() {
         return String.format("%n");
