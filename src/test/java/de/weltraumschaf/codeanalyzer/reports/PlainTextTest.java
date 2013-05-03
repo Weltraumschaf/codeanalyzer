@@ -82,7 +82,7 @@ public class PlainTextTest {
         clazz.implement(iface);
         assertThat(sut.iface(iface), is(equalTo(
               "I PUBLIC foo.bar.Foo (foo/bar/Foo.java:23)" + NL
-            + "    +- C PACKAGE foo.bar.Bar (foo/bar/Bar.java:23)" + NL)));
+            + "     +- C PACKAGE foo.bar.Bar (foo/bar/Bar.java:23)" + NL)));
     }
 
     @Test
@@ -93,12 +93,12 @@ public class PlainTextTest {
         clazz1.setPosition(new Position("foo/bar/Bar.java", 23));
         clazz1.implement(iface);
         final Class clazz2 = new Class(Package.create("foo.bar"), "Baz");
-        clazz1.setPosition(new Position("foo/bar/Baz.java", 23));
-        clazz1.implement(iface);
+        clazz2.setPosition(new Position("foo/bar/Baz.java", 23));
+        clazz2.implement(iface);
         assertThat(sut.iface(iface), is(equalTo(
               "I PUBLIC foo.bar.Foo (foo/bar/Foo.java:23)" + NL
-            + "    +- C PACKAGE foo.bar.Bar (foo/bar/Bar.java:23)" + NL
-            + "    +- C PACKAGE foo.bar.Baz (foo/bar/Baz.java:23)" + NL)));
+            + "     +- C PACKAGE foo.bar.Bar (foo/bar/Bar.java:23)" + NL
+            + "     +- C PACKAGE foo.bar.Baz (foo/bar/Baz.java:23)" + NL)));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class PlainTextTest {
         iface2.extend(iface1);
         assertThat(sut.iface(iface1), is(equalTo(
               "I PUBLIC foo.bar.Foo (foo/bar/Foo.java:23)" + NL
-            + "    +- I PUBLIC foo.bar.Bar (foo/bar/Bar.java:23)" + NL)));
+            + "     +- I PUBLIC foo.bar.Bar (foo/bar/Bar.java:23)" + NL)));
     }
 
     @Test

@@ -9,7 +9,6 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.codeanalyzer.reports;
 
 import de.weltraumschaf.codeanalyzer.Class;
@@ -21,6 +20,7 @@ import de.weltraumschaf.codeanalyzer.Interface;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class PlainText extends BaseFormatter {
+    private static final String SPLITTER = " +- ";
 
     @Override
     public String title(final String title) {
@@ -38,10 +38,46 @@ class PlainText extends BaseFormatter {
             throw new NullPointerException("Interface must not be null!");
         }
 
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append(singleInterface(iface));
+
+        if (iface.hasExtendingInterfaces()) {
+            indent();
+
+            for (final Interface extender : iface.getExtendingInterfaces()) {
+                buffer.append(indention())
+                      .append(SPLITTER)
+                      .append(singleInterface(extender));
+            }
+
+            exdent();
+        }
+        if (iface.hasImplementations()) {
+            indent();
+
+            for (final Class impls : iface.getImplementations()) {
+                buffer.append(indention())
+                      .append(SPLITTER)
+                      .append(singleClass(impls));
+            }
+
+            exdent();
+        }
+
+        return buffer.toString();
+    }
+
+    /**
+     * Formats single interface w/o implementations or extending interfaces.
+     *
+     * @param iface interface to format
+     * @return formatted string
+     */
+    private String singleInterface(final Interface iface) {
         return String.format("I %s %s (%s)%n",
-            iface.getVisibility(),
-            iface.getFullQualifiedName(),
-            iface.getPosition());
+                iface.getVisibility(),
+                iface.getFullQualifiedName(),
+                iface.getPosition());
     }
 
     @Override
@@ -50,6 +86,10 @@ class PlainText extends BaseFormatter {
             throw new NullPointerException("Class must not be null!");
         }
 
+        return singleClass(clazz);
+    }
+
+    private String singleClass(final Class clazz) {
         final String format;
 
         if (clazz.isAbstract()) {
@@ -70,5 +110,4 @@ class PlainText extends BaseFormatter {
     public String nl() {
         return String.format("%n");
     }
-
 }

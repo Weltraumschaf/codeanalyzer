@@ -44,42 +44,42 @@ public class BaseFormatterTest {
     public void testIndent_withDefaultPattern() {
         assertThat(sut.indention(), is(equalTo("")));
         sut.indent();
-        assertThat(sut.indention(), is(equalTo(" ")));
-        sut.indent();
-        assertThat(sut.indention(), is(equalTo("  ")));
-        assertThat(sut.indention(), is(equalTo("  ")));
-        sut.indent();
-        assertThat(sut.indention(), is(equalTo("   ")));
-        sut.exindent();
-        assertThat(sut.indention(), is(equalTo("  ")));
-        assertThat(sut.indention(), is(equalTo("  ")));
-        sut.exindent();
-        assertThat(sut.indention(), is(equalTo(" ")));
-        sut.exindent();
-        assertThat(sut.indention(), is(equalTo("")));
-        sut.exindent();
-        assertThat(sut.indention(), is(equalTo("")));
-    }
-
-    @Test
-    public void testIndent_withCustomPattern() {
-        sut.setIndentationPattern("    ");
-        assertThat(sut.indention(), is(equalTo("")));
-        sut.indent();
         assertThat(sut.indention(), is(equalTo("    ")));
         sut.indent();
         assertThat(sut.indention(), is(equalTo("        ")));
         assertThat(sut.indention(), is(equalTo("        ")));
         sut.indent();
         assertThat(sut.indention(), is(equalTo("            ")));
-        sut.exindent();
+        sut.exdent();
         assertThat(sut.indention(), is(equalTo("        ")));
         assertThat(sut.indention(), is(equalTo("        ")));
-        sut.exindent();
+        sut.exdent();
         assertThat(sut.indention(), is(equalTo("    ")));
-        sut.exindent();
+        sut.exdent();
         assertThat(sut.indention(), is(equalTo("")));
-        sut.exindent();
+        sut.exdent();
+        assertThat(sut.indention(), is(equalTo("")));
+    }
+
+    @Test
+    public void testIndent_withCustomPattern() {
+        sut.setIndentationPattern(" ");
+        assertThat(sut.indention(), is(equalTo("")));
+        sut.indent();
+        assertThat(sut.indention(), is(equalTo(" ")));
+        sut.indent();
+        assertThat(sut.indention(), is(equalTo("  ")));
+        assertThat(sut.indention(), is(equalTo("  ")));
+        sut.indent();
+        assertThat(sut.indention(), is(equalTo("   ")));
+        sut.exdent();
+        assertThat(sut.indention(), is(equalTo("  ")));
+        assertThat(sut.indention(), is(equalTo("  ")));
+        sut.exdent();
+        assertThat(sut.indention(), is(equalTo(" ")));
+        sut.exdent();
+        assertThat(sut.indention(), is(equalTo("")));
+        sut.exdent();
         assertThat(sut.indention(), is(equalTo("")));
     }
 

@@ -36,6 +36,17 @@ public final class Interface extends BaseUnit {
      */
     private final Map<String, Interface> extendingInterfaces = Maps.newHashMap();
     /**
+     * Hold all interface which extends this one.
+     *
+     * <dl>
+     *  <dt>Key
+     *  <dd>Full qualified name
+     *  <dt>Value
+     *  <dd>Interface object
+     * </dl>
+     */
+    private final Map<String, Interface> extendedByInterfaces = Maps.newHashMap();
+    /**
      * Holds all classes which implement this interface.
      *
      * <dl>
@@ -68,6 +79,18 @@ public final class Interface extends BaseUnit {
         super(containingPackage, name, visibility);
     }
 
+    public void extendedBy(final Interface iface) {
+        extendedByInterfaces.put(iface.getFullQualifiedName(), iface);
+    }
+
+    public boolean hasExtendingInterfaces() {
+        return !extendedByInterfaces.isEmpty();
+    }
+
+    public Collection<Interface> getExtendingInterfaces() {
+        return extendedByInterfaces.values();
+    }
+
     /**
      * Set an interface as extending on to this.
      *
@@ -75,6 +98,7 @@ public final class Interface extends BaseUnit {
      */
     public void extend(final Interface iface) {
         extendingInterfaces.put(iface.getFullQualifiedName(), iface);
+        iface.extendedBy(this);
     }
 
     /**
@@ -121,6 +145,15 @@ public final class Interface extends BaseUnit {
         if (!implementation.doesImplement(this)) {
             implementation.implement(this);
         }
+    }
+
+    /**
+     * Return whether this interface has implementations or not.
+     *
+     * @return {@code true} if this interface has implementations, else {@code false}
+     */
+    public boolean hasImplementations() {
+        return !implementations.isEmpty();
     }
 
     /**

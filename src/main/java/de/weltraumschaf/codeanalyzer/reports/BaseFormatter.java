@@ -19,13 +19,12 @@ package de.weltraumschaf.codeanalyzer.reports;
  */
 abstract class BaseFormatter implements Formatter {
 
-    private static final String DEFAULT_INDENTATION_PATTERN = " ";
     /**
      * Spaces used as tabulator.
      */
     protected static final String TAB = "    ";
     private int indentionLevel = 0;
-    private String indentationPattern = DEFAULT_INDENTATION_PATTERN;
+    private String indentationPattern = TAB;
 
     /**
      * Null safe trim method.
@@ -66,7 +65,7 @@ abstract class BaseFormatter implements Formatter {
     }
 
     @Override
-    public void exindent() {
+    public void exdent() {
         --indentionLevel;
 
         if (indentionLevel < 0) {
