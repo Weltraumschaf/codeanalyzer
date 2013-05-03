@@ -25,8 +25,10 @@ public class BaseUnitTest {
 
     @Test
     public void getFullQualifiedName() {
-        final Unit sut = new StubbedBaseUnit(Package.create("foo.bar"), "Baz", Visibility.PRIVATE);
+        Unit sut = new StubbedBaseUnit(Package.create("foo.bar"), "Baz", Visibility.PRIVATE);
         assertThat(sut.getFullQualifiedName(), is(equalTo("foo.bar.Baz")));
+        sut = new StubbedBaseUnit(Package.NULL, "Baz", Visibility.PRIVATE);
+        assertThat(sut.getFullQualifiedName(), is(equalTo("Baz")));
     }
 
     @Test

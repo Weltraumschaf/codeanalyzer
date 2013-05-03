@@ -41,7 +41,7 @@ public class JavaFileAnalyzerTest {
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.AbstractOne"), is(true));
         final Class abstractOne = data.getClass("de.weltraumschaf.codeanalyzer.test.AbstractOne");
         assertThat(abstractOne, notNullValue());
-        assertThat(abstractOne.isIsAbstract(), is(true));
+        assertThat(abstractOne.isAbstract(), is(true));
         assertThat(abstractOne.getVisibility(), is(Visibility.PACKAGE));
         assertThat(abstractOne.getPosition(), equalTo(new Position(file.getAbsolutePath(), 23)));
         assertThat(abstractOne.doesImplement("de.weltraumschaf.codeanalyzer.test.One"), is(true));
@@ -67,7 +67,7 @@ public class JavaFileAnalyzerTest {
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.AbstractOne"), is(true));
         final Class abstractOne = data.getClass("de.weltraumschaf.codeanalyzer.test.AbstractOne");
         assertThat(abstractOne, notNullValue());
-        assertThat(abstractOne.isIsAbstract(), is(true));
+        assertThat(abstractOne.isAbstract(), is(true));
         assertThat(abstractOne.getVisibility(), is(Visibility.PACKAGE));
         assertThat(abstractOne.getPosition(),
             equalTo(new Position(nameToFile.get("AbstractOne.java").getAbsolutePath(), 23)));
@@ -75,7 +75,7 @@ public class JavaFileAnalyzerTest {
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.OneImplA"), is(true));
         final Class oneImplA = data.getClass("de.weltraumschaf.codeanalyzer.test.OneImplA");
         assertThat(oneImplA, notNullValue());
-        assertThat(oneImplA.isIsAbstract(), is(false));
+        assertThat(oneImplA.isAbstract(), is(false));
         assertThat(oneImplA.getVisibility(), is(Visibility.PACKAGE));
         assertThat(oneImplA.getPosition(),
             equalTo(new Position(nameToFile.get("OneImplA.java").getAbsolutePath(), 20)));
@@ -83,7 +83,7 @@ public class JavaFileAnalyzerTest {
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.OneImplB"), is(true));
         final Class oneImplB = data.getClass("de.weltraumschaf.codeanalyzer.test.OneImplB");
         assertThat(oneImplB, notNullValue());
-        assertThat(oneImplB.isIsAbstract(), is(false));
+        assertThat(oneImplB.isAbstract(), is(false));
         assertThat(oneImplB.getVisibility(), is(Visibility.PACKAGE));
         assertThat(oneImplB.getPosition(),
             equalTo(new Position(nameToFile.get("OneImplB.java").getAbsolutePath(), 20)));
@@ -91,7 +91,7 @@ public class JavaFileAnalyzerTest {
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.Ones"), is(true));
         final Class ones = data.getClass("de.weltraumschaf.codeanalyzer.test.Ones");
         assertThat(ones, notNullValue());
-        assertThat(ones.isIsAbstract(), is(false));
+        assertThat(ones.isAbstract(), is(false));
         assertThat(ones.getVisibility(), is(Visibility.PUBLIC));
         assertThat(ones.getPosition(),
             equalTo(new Position(nameToFile.get("Ones.java").getAbsolutePath(), 20)));

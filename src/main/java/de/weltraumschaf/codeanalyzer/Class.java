@@ -12,6 +12,7 @@
 package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.collect.Maps;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -73,10 +74,11 @@ public final class Class extends BaseUnit {
      * @param iface implemented interface
      */
     public void implement(final Interface iface) {
-        if (!iface.hasImplementation(iface)) {
+        implementedInterfaces.put(iface.getFullQualifiedName(), iface);
+        // Must be afterwards to prevent endless loop.
+        if (!iface.hasImplementation(this)) {
             iface.addImplementation(this);
         }
-        implementedInterfaces.put(iface.getFullQualifiedName(), iface);
     }
 
     public boolean doesImplement(final Interface iface) {
@@ -103,8 +105,10 @@ public final class Class extends BaseUnit {
      * this method returns the interface.
      *
      * @param fullQualifiedName name constructed package and name
-     * @return never returns {@code null} CHECKSTYLE:OFF
-     * @throws IllegalArgumentException if class does not implement the interface CHECKSTYLE:ON
+     * @return never returns {@code null}
+     * CHECKSTYLE:OFF
+     * @throws IllegalArgumentException if class does not implement the interface
+     * CHECKSTYLE:ON
      */
     public Interface getInterface(final String fullQualifiedName) {
         if (!doesImplement(fullQualifiedName)) {
@@ -115,22 +119,26 @@ public final class Class extends BaseUnit {
         return implementedInterfaces.get(fullQualifiedName);
     }
 
+    public Collection<Interface> interfaces() {
+        return implementedInterfaces.values();
+    }
+
     /**
      * Get extended class.
      *
      * @return may return {@code null} if class only extends {@link java.lang.Object}
      */
-    public Class getExtendedClass() {
+    public Class extend() {
         return extendedClass;
     }
 
     /**
      * Set extended class.
      *
-     * @param extendedClass which is extended
+     * @param clazz which is extended
      */
-    public void setExtendedClass(final Class extendedClass) {
-        this.extendedClass = extendedClass;
+    public void extend(final Class clazz) {
+        this.extendedClass = clazz;
     }
 
     /**
@@ -138,7 +146,7 @@ public final class Class extends BaseUnit {
      *
      * @return {@code true} if class is abstract, else {@code false}
      */
-    public boolean isIsAbstract() {
+    public boolean isAbstract() {
         return isAbstract;
     }
 
@@ -149,6 +157,5 @@ public final class Class extends BaseUnit {
         }
 
         super.update(unit);
-//        final Class other = (Class) unit;
     }
 }

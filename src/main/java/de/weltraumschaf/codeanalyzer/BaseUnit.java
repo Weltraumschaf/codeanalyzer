@@ -63,7 +63,13 @@ abstract class BaseUnit implements Unit {
 
     @Override
     public String getFullQualifiedName() {
-        return getPackage().getFullQualifiedName() + Package.SEPARATOR + getName();
+        final String packageName = getPackage().getFullQualifiedName();
+
+        if (packageName.isEmpty()) {
+            return getName();
+        } else {
+            return packageName + Package.SEPARATOR + getName();
+        }
     }
 
     @Override

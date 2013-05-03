@@ -86,7 +86,7 @@ public final class Interface extends BaseUnit {
         return extendingInterfaces.containsKey(fullQualifiedName);
     }
 
-    public Interface getInterface(final String fullQualifiedName) {
+    public Interface getExtendedInterface(final String fullQualifiedName) {
         if (!doesExtend(fullQualifiedName)) {
             throw new IllegalArgumentException(
                 String.format("Interface %s does not extend %s!", getFullQualifiedName(), fullQualifiedName));
@@ -96,14 +96,23 @@ public final class Interface extends BaseUnit {
     }
 
     public void addImplementation(final Class implementation) {
+        implementations.put(implementation.getFullQualifiedName(), implementation);
+        // Must be afterwards to prevent endless loop.
         if (!implementation.doesImplement(this)) {
             implementation.implement(this);
         }
-        implementations.put(implementation.getFullQualifiedName(), implementation);
     }
 
     public Collection<Class> getImplementations() {
         return implementations.values();
+    }
+
+    public boolean hasImplementation(Class clazz) {
+        return hasImplementation(clazz.getFullQualifiedName());
+    }
+
+    public boolean hasImplementation(String fullQualifiedName) {
+        return implementations.containsKey(fullQualifiedName);
     }
 
     @Override
@@ -113,11 +122,6 @@ public final class Interface extends BaseUnit {
         }
 
         super.update(unit);
-//        final Interface other = (Interface) unit;
-    }
-
-    public boolean hasImplementation(Interface iface) {
-        return implementations.containsKey(iface.getFullQualifiedName());
     }
 
 }
