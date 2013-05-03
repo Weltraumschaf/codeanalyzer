@@ -91,7 +91,20 @@ final class Visitor extends ASTVisitor {
         return true;
     }
 
+    /**
+     * Visits interface declarations node of the AST.
+     *
+     * @param node a type declaration node for which the method
+     *             {@link TypeDeclaration#isInterface()} return {@code true}
+     * CHECKSTYLE:OFF
+     * @throws IllegalArgumentException if passed in node is not an interface type
+     * CHECKSTYLE:ON
+     */
     private void visitInterfaceDeclaration(final TypeDeclaration node) {
+        if (!node.isInterface()) {
+            throw new IllegalArgumentException("Not an interfcae type declaration given!");
+        }
+
         final Interface iface = new Interface(pkg, node.getName().toString(), determineVisibility(node));
         iface.setPosition(createPosition(node.getName()));
 
@@ -102,7 +115,20 @@ final class Visitor extends ASTVisitor {
         }
     }
 
+    /**
+     * Visits class declarations node of the AST.
+     *
+     * @param node a type declaration node for which the method
+     *             {@link TypeDeclaration#isInterface()} return {@code false}
+     * CHECKSTYLE:OFF
+     * @throws IllegalArgumentException if passed in node is an interface type
+     * CHECKSTYLE:ON
+     */
     private void visitClassDeclaration(final TypeDeclaration node) {
+        if (node.isInterface()) {
+            throw new IllegalArgumentException("Not an class type declaration given!");
+        }
+
         final Class clazz = new Class(
             pkg,
             node.getName().toString(),
@@ -132,6 +158,12 @@ final class Visitor extends ASTVisitor {
         }
     }
 
+    /**
+     * Inspects a given type declaration node whether it is abstract or not.
+     *
+     * @param node type declaration node to inspect
+     * @return {@code true} if node is an abstract class, else {@code false}
+     */
     private boolean determineAbstractness(final TypeDeclaration node) {
         final List<Modifier> mods = node.modifiers();
 
@@ -143,6 +175,13 @@ final class Visitor extends ASTVisitor {
 
         return false;
     }
+
+    /**
+     * Inspects a given type declaration and determines the visibility.
+     *
+     * @param node type declaration node to inspect
+     * @return if no modifier was found it returns {@link Visibility#PACKAGE} as default
+     */
     private Visibility determineVisibility(final TypeDeclaration node) {
         final List<Modifier> mods = node.modifiers();
 
@@ -159,6 +198,12 @@ final class Visitor extends ASTVisitor {
         return Visibility.PACKAGE;
     }
 
+    /**
+     * Creates a source code position for a given name.
+     *
+     * @param name used get line number from {@link #compilationUnit}
+     * @return always new object
+     */
     private Position createPosition(final Name name) {
         return new Position(file.getAbsolutePath(), compilationUnit.getLineNumber(name.getStartPosition()));
     }

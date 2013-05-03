@@ -11,7 +11,6 @@
  */
 package de.weltraumschaf.codeanalyzer;
 
-import de.weltraumschaf.codeanalyzer.reports.Formatters;
 import de.weltraumschaf.codeanalyzer.reports.Report;
 import de.weltraumschaf.codeanalyzer.reports.Reports;
 import java.io.File;
@@ -110,11 +109,12 @@ public final class App {
      * Analyzes the found files and collect data from them.
      *
      * @param files files to inspect
+     * @return a new collector object with data
      * @throws IOException if IO errors occurs
      */
     private UnitCollector collectData(final Collection<File> files) throws IOException {
         final UnitCollector data = new UnitCollector();
-        final JavaFileAnalyzer analyzer = new JavaFileAnalyzer(data);
+//        final JavaFileAnalyzer analyzer = new JavaFileAnalyzer(data);
 
 //        for (final File file : files) {
 //            analyzer.analyze(file);
@@ -124,12 +124,22 @@ public final class App {
         return data;
     }
 
+    /**
+     * Generate and print out the report.
+     *
+     * @param data to generate report from
+     */
     private void generateReport(final UnitCollector data) {
         final Report report = Reports.createPackageEncapsulation();
         report.setData(data);
         out.print(report.generate());
     }
 
+    /**
+     * Generate some test data.
+     *
+     * @param data to collect the test data
+     */
     private void generateTestData(final UnitCollector data) {
         final Package pkg = Package.create("foo.bar.baz");
         final Interface ifaceFoo = new Interface(pkg, "Foo");
@@ -139,8 +149,7 @@ public final class App {
         data.addClass(classFooImplA);
         final Class classFooImplB = new Class(pkg, "FooImplB");
         classFooImplB.implement(ifaceFoo);
-        data.addClass(classFooImplB
-                );
+        data.addClass(classFooImplB);
         final Interface ifaceBar = new Interface(pkg, "Bar");
         data.addInterface(ifaceBar);
     }

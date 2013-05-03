@@ -15,6 +15,7 @@ package de.weltraumschaf.codeanalyzer;
 import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * Represents a Java interface.
@@ -86,6 +87,17 @@ public final class Interface extends BaseUnit {
         return extendingInterfaces.containsKey(fullQualifiedName);
     }
 
+    /**
+     * Get the interface which this one extends.
+     *
+     * Check with {@link #doesExtend(java.lang.String)} before invoke this method.
+     *
+     * @param fullQualifiedName of the extended interface
+     * @return extending interface object
+     * CHECKSTYLE:OFF
+     * @throws IllegalArgumentException if this interface does not extend the given interface
+     * CHECKSTYLE:ON
+     */
     public Interface getExtendedInterface(final String fullQualifiedName) {
         if (!doesExtend(fullQualifiedName)) {
             throw new IllegalArgumentException(
@@ -95,6 +107,14 @@ public final class Interface extends BaseUnit {
         return extendingInterfaces.get(fullQualifiedName);
     }
 
+    /**
+     * Add class which implements this interface.
+     *
+     * If this interface was not already added to the given class as implemented interface,
+     * this method also add itself as implemented interface to the class.
+     *
+     * @param implementation implementing class
+     */
     public void addImplementation(final Class implementation) {
         implementations.put(implementation.getFullQualifiedName(), implementation);
         // Must be afterwards to prevent endless loop.
@@ -103,15 +123,34 @@ public final class Interface extends BaseUnit {
         }
     }
 
+    /**
+     * Get all classes implementing this interface.
+     *
+     * @return collection of implementing classes
+     */
     public Collection<Class> getImplementations() {
         return implementations.values();
     }
 
-    public boolean hasImplementation(Class clazz) {
+    /**
+     * Return whether this interface has a class as implementation or not.
+     *
+     * @see #hasImplementation(java.lang.String)
+     * @param clazz class to ask for
+     * @return {@code true} if the interface has this class as implementation, else {@code false}
+     */
+    @SuppressWarnings(value = "OCP_OVERLY_CONCRETE_PARAMETER", justification = "Only class can be an implementaion.")
+    public boolean hasImplementation(final Class clazz) {
         return hasImplementation(clazz.getFullQualifiedName());
     }
 
-    public boolean hasImplementation(String fullQualifiedName) {
+    /**
+     * Return whether this interface has a class as implementation or not.
+     *
+     * @param fullQualifiedName of the class
+     * @return {@code true} if the interface has this class as implementation, else {@code false}
+     */
+    public boolean hasImplementation(final String fullQualifiedName) {
         return implementations.containsKey(fullQualifiedName);
     }
 

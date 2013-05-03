@@ -38,7 +38,7 @@ class PlainText implements Formatter {
     }
 
     @Override
-    public String iementation(final Class clazz) {
+    public String implementation(final Class clazz) {
         return String.format("  +- %s %s%n", clazz.getVisibility(), clazz.getFullQualifiedName());
     }
 

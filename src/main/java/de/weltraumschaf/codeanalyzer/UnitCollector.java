@@ -93,6 +93,11 @@ public final class UnitCollector {
         interfaces.put(fullQualifiedName, iface);
     }
 
+    /**
+     * Get all collected interfaces.
+     *
+     * @return collection of interfaces
+     */
     public Collection<Interface> getInterfaces() {
         return interfaces.values();
     }

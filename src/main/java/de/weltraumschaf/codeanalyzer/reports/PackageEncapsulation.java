@@ -17,18 +17,41 @@ import de.weltraumschaf.codeanalyzer.UnitCollector;
 import java.util.Collection;
 
 /**
+ * Generates a report about package encapsulation.
+ *
+ * Package encapsulation means:
+ * If there is an public interface Foo with some implementations (e.g. FooImplA, FooImplB),
+ * then the implementations should be package private. So outside the package only the type
+ * Foo is referenced. For creating the concrete instances there should be a factory.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class PackageEncapsulation implements Report {
 
+    /**
+     * Collected data from which the report will be generated.
+     */
     private UnitCollector data;
-    private Formatter formatt = Formatters.createDefault();
+    /**
+     * Used to format the output string.
+     */
+    private Formatter formatt;
 
+    /**
+     * Convenience constructor which initializes {@link #formatt} with {@link Formatters#createDefault()}.
+     */
     public PackageEncapsulation() {
         this(Formatters.createDefault());
     }
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param fmt used to format the output string
+     * CHECKSTYLE:OFF
+     * @throws NullPointerException if fmt is {@code null}
+     * CHECKSTYLE:ON
+     */
     public PackageEncapsulation(final Formatter fmt) {
         super();
 
@@ -52,7 +75,7 @@ class PackageEncapsulation implements Report {
 
     @Override
     public String generate() {
-        final StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
         buf.append(formatt.title("Package encapsulation"));
         final Collection<Interface> ifaces = data.getInterfaces();
 
@@ -69,7 +92,7 @@ class PackageEncapsulation implements Report {
                 buf.append(formatt.text("No implementations."));
             } else {
                 for (final Class clazz : implementations) {
-                    buf.append(formatt.iementation(clazz));
+                    buf.append(formatt.implementation(clazz));
                 }
             }
         }

@@ -14,6 +14,7 @@ package de.weltraumschaf.codeanalyzer;
 import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * Represents a Java class.
@@ -44,10 +45,23 @@ public final class Class extends BaseUnit {
      */
     private Class extendedClass;
 
+    /**
+     * Convenience constructor initializes {@link BaseUnit#visibility} with {@link Visibility#PACKAGE}.
+     *
+     * @param containingPackage package in which the class s declared
+     * @param name pure name without package
+     */
     public Class(final Package containingPackage, final String name) {
         this(containingPackage, name, Visibility.PACKAGE);
     }
 
+    /**
+     * Convenience constructor initializes {@link #isAbstract} with {@code false}.
+     *
+     * @param containingPackage package in which the class s declared
+     * @param name pure name without package
+     * @param visibility visibility of the class
+     */
     public Class(final Package containingPackage, final String name, final Visibility visibility) {
         this(containingPackage, name, visibility, false);
     }
@@ -81,6 +95,14 @@ public final class Class extends BaseUnit {
         }
     }
 
+    /**
+     * Whether the class implements an {@link Interface interface} or not.
+     *
+     * @see #doesImplement(java.lang.String)
+     * @param iface to check for
+     * @return {@code true} if the class implements the interface; else {@code false}
+     */
+    @SuppressWarnings(value = "OCP_OVERLY_CONCRETE_PARAMETER", justification = "Only interfaces can be implemented.")
     public boolean doesImplement(final Interface iface) {
         return doesImplement(iface.getFullQualifiedName());
     }
@@ -91,7 +113,7 @@ public final class Class extends BaseUnit {
      * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.Interface)} so that
      * this method returns {@code true} for the interface.
      *
-     * @param fullQualifiedName name constructed package and name
+     * @param fullQualifiedName name constructed of package and name
      * @return {@code true} if the class implements the interface; else {@code false}
      */
     public boolean doesImplement(final String fullQualifiedName) {
@@ -119,6 +141,11 @@ public final class Class extends BaseUnit {
         return implementedInterfaces.get(fullQualifiedName);
     }
 
+    /**
+     * Return collection of all implemented interfaces.
+     *
+     * @return never {@code null}, maybe empty collection
+     */
     public Collection<Interface> interfaces() {
         return implementedInterfaces.values();
     }

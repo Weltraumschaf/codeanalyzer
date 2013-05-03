@@ -35,7 +35,7 @@ public interface Report {
     /**
      * Generates report and returns a formatted string.
      *
-     * @return
+     * @return report as formatted string
      */
     String generate();
 

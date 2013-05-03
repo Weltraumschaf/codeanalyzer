@@ -35,7 +35,7 @@ class Markdown implements Formatter {
     }
 
     @Override
-    public String iementation(final de.weltraumschaf.codeanalyzer.Class clazz) {
+    public String implementation(final de.weltraumschaf.codeanalyzer.Class clazz) {
         return String.format(TAB + "  +- %s %s%n", clazz.getVisibility(), clazz.getFullQualifiedName());
     }
 

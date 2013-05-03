@@ -21,7 +21,7 @@ public final class Formatters {
     /**
      * Default formatter.
      */
-    private static final Formatter DEFAULT = createTextPlain();
+    private static final Formatter DEFAULT = createPlainText();
 
     /**
      * Hidden for static factory.
@@ -49,7 +49,12 @@ public final class Formatters {
         return new Markdown();
     }
 
-    public static Formatter createTextPlain() {
+    /**
+     * Creates a plain text formatter.
+     *
+     * @return always new instance
+     */
+    public static Formatter createPlainText() {
         return new PlainText();
     }
 

@@ -21,16 +21,43 @@ import de.weltraumschaf.codeanalyzer.Interface;
  */
 public interface Formatter {
 
+    /**
+     * Spaces used as tabulator.
+     */
     String TAB = "    ";
-
-    public String title(String title);
-
-    public String text(String text);
-
-    public String iface(Interface iface);
-
-    public String iementation(Class clazz);
-
-    public String nl();
+    /**
+     * Format a title.
+     *
+     * @param title to format
+     * @return formatted string
+     */
+    String title(String title);
+    /**
+     * Format a text.
+     *
+     * @param text to format
+     * @return formatted string
+     */
+    String text(String text);
+    /**
+     * Format a interface.
+     *
+     * @param iface to format
+     * @return formatted string
+     */
+    String iface(Interface iface);
+    /**
+     * Format a implementation.
+     *
+     * @param clazz to format
+     * @return formatted string
+     */
+    String implementation(Class clazz);
+    /**
+     * Format a new line.
+     *
+     * @return formatted string
+     */
+    String nl();
 
 }

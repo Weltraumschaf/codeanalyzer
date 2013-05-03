@@ -31,7 +31,7 @@ public class ClassTest {
 
     @Test
     public void getVisibility_isPackagePrivateByDefault() {
-        Class sut = new Class(Package.NULL, "Foo");
+        final Class sut = new Class(Package.NULL, "Foo");
         assertThat(sut.getVisibility(), is(Visibility.PACKAGE));
     }
 

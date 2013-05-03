@@ -44,6 +44,7 @@
     </properties>
 
     <dependencies>
+        <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -60,6 +61,7 @@
 	    <groupId>org.hamcrest</groupId>
 	    <artifactId>hamcrest-library</artifactId>
 	    <version>1.3</version>
+            <scope>test</scope>
 	</dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -72,6 +74,12 @@
 	            <artifactId>hamcrest-core</artifactId>
 	        </exclusion>
 	    </exclusions>
+        </dependency>
+        <!-- non test dependencies -->
+        <dependency>
+            <groupId>findbugs</groupId>
+            <artifactId>annotations</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
