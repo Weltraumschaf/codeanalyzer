@@ -13,7 +13,9 @@
 package de.weltraumschaf.codeanalyzer.reports;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import org.junit.Ignore;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Unit tests for {@link PlainText}.
@@ -22,24 +24,27 @@ import static org.junit.Assert.*;
  */
 public class PlainTextTest {
 
-    @Test
+    private final Formatter sut = new PlainText();
+
+    @Test @Ignore
     public void testTitle() {
     }
 
-    @Test
+    @Test @Ignore
     public void testText() {
     }
 
-    @Test
+    @Test @Ignore
     public void testIface() {
     }
 
-    @Test
+    @Test @Ignore
     public void testIementation() {
     }
 
     @Test
     public void testNl() {
+        assertThat(sut.nl(), is(equalTo(System.getProperty("line.separator"))));
     }
 
 }

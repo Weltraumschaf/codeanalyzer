@@ -9,7 +9,6 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.collect.Maps;
@@ -26,10 +25,10 @@ public final class Class extends BaseUnit {
      * Holds the implemented interfaces.
      *
      * <dl>
-     *  <dt>Key
-     *  <dd>full qualified name.
-     *  <dt>Value
-     *  <dd>Instance of interface object.
+     * <dt>Key
+     * <dd>full qualified name.
+     * <dt>Value
+     * <dd>Instance of interface object.
      * </dl>
      */
     private final Map<String, Interface> implementedInterfaces = Maps.newHashMap();
@@ -40,10 +39,17 @@ public final class Class extends BaseUnit {
     /**
      * Class from which this one is derived.
      *
-     * May be {@code null} if class does not inherit from other class
-     * than {@link java.lang.Object}.
+     * May be {@code null} if class does not inherit from other class than {@link java.lang.Object}.
      */
     private Class extendedClass;
+
+    public Class(final Package containingPackage, final String name) {
+        this(containingPackage, name, Visibility.PACKAGE);
+    }
+
+    public Class(final Package containingPackage, final String name, final Visibility visibility) {
+        this(containingPackage, name, visibility, false);
+    }
 
     /**
      * Dedicated constructor.
@@ -54,9 +60,9 @@ public final class Class extends BaseUnit {
      * @param isAbstract whether the class is abstract or not
      */
     public Class(final Package containingPackage,
-                 final String name,
-                 final Visibility visibility,
-                 final boolean isAbstract) {
+            final String name,
+            final Visibility visibility,
+            final boolean isAbstract) {
         super(containingPackage, name, visibility);
         this.isAbstract = isAbstract;
     }
@@ -67,14 +73,21 @@ public final class Class extends BaseUnit {
      * @param iface implemented interface
      */
     public void implement(final Interface iface) {
+        if (!iface.hasImplementation(iface)) {
+            iface.addImplementation(this);
+        }
         implementedInterfaces.put(iface.getFullQualifiedName(), iface);
+    }
+
+    public boolean doesImplement(final Interface iface) {
+        return doesImplement(iface.getFullQualifiedName());
     }
 
     /**
      * Whether the class implements an {@link Interface interface} or not.
      *
-     * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.Interface)}
-     * so that this method returns {@code true} for the interface.
+     * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.Interface)} so that
+     * this method returns {@code true} for the interface.
      *
      * @param fullQualifiedName name constructed package and name
      * @return {@code true} if the class implements the interface; else {@code false}
@@ -86,19 +99,17 @@ public final class Class extends BaseUnit {
     /**
      * Get a particular implemented interface.
      *
-     * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.Interface)}
-     * so that this method returns the interface.
+     * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.Interface)} so that
+     * this method returns the interface.
      *
      * @param fullQualifiedName name constructed package and name
-     * @return never returns {@code null}
-     * CHECKSTYLE:OFF
-     * @throws IllegalArgumentException if class does not implement the interface
-     * CHECKSTYLE:ON
+     * @return never returns {@code null} CHECKSTYLE:OFF
+     * @throws IllegalArgumentException if class does not implement the interface CHECKSTYLE:ON
      */
     public Interface getInterface(final String fullQualifiedName) {
         if (!doesImplement(fullQualifiedName)) {
             throw new IllegalArgumentException(
-                String.format("Class %s does not implement %s!", getFullQualifiedName(), fullQualifiedName));
+                    String.format("Class %s does not implement %s!", getFullQualifiedName(), fullQualifiedName));
         }
 
         return implementedInterfaces.get(fullQualifiedName);
@@ -140,5 +151,4 @@ public final class Class extends BaseUnit {
         super.update(unit);
 //        final Class other = (Class) unit;
     }
-
 }

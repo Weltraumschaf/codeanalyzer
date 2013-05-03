@@ -96,7 +96,9 @@ public final class Interface extends BaseUnit {
     }
 
     public void addImplementation(final Class implementation) {
-        implementation.implement(this);
+        if (!implementation.doesImplement(this)) {
+            implementation.implement(this);
+        }
         implementations.put(implementation.getFullQualifiedName(), implementation);
     }
 
@@ -112,6 +114,10 @@ public final class Interface extends BaseUnit {
 
         super.update(unit);
 //        final Interface other = (Interface) unit;
+    }
+
+    public boolean hasImplementation(Interface iface) {
+        return implementations.containsKey(iface.getFullQualifiedName());
     }
 
 }

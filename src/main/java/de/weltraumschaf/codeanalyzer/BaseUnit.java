@@ -9,7 +9,6 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.base.Objects;
@@ -53,7 +52,7 @@ abstract class BaseUnit implements Unit {
     }
 
     @Override
-    public Package getContainingPackage() {
+    public Package getPackage() {
         return containingPackage;
     }
 
@@ -64,7 +63,7 @@ abstract class BaseUnit implements Unit {
 
     @Override
     public String getFullQualifiedName() {
-        return containingPackage.getFullQualifiedName() + Package.SEPARATOR + name;
+        return getPackage().getFullQualifiedName() + Package.SEPARATOR + getName();
     }
 
     @Override
@@ -93,13 +92,16 @@ abstract class BaseUnit implements Unit {
         }
 
         final BaseUnit unit = (BaseUnit) other;
-        visibility = unit.visibility;
-        position = unit.position;
+
+        if (Objects.equal(containingPackage, unit.containingPackage) && Objects.equal(name, unit.name)) {
+            visibility = unit.visibility;
+            position = unit.position;
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(containingPackage, name);
+        return Objects.hashCode(containingPackage, name, visibility, position);
     }
 
     @Override
@@ -110,14 +112,13 @@ abstract class BaseUnit implements Unit {
 
         final BaseUnit other = (BaseUnit) obj;
         return Objects.equal(containingPackage, other.containingPackage)
-            && Objects.equal(name, other.name)
-            && Objects.equal(visibility, other.visibility)
-            && Objects.equal(position, other.position);
+                && Objects.equal(name, other.name)
+                && Objects.equal(visibility, other.visibility)
+                && Objects.equal(position, other.position);
     }
 
     @Override
     public String toString() {
-        return getFullQualifiedName() + " " + visibility;
+        return getVisibility() + " " + getFullQualifiedName();
     }
-
 }

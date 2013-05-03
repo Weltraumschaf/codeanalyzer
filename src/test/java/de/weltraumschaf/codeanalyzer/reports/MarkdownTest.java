@@ -12,8 +12,11 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  * Unit tests for {@link Markdown}.
@@ -22,24 +25,27 @@ import static org.junit.Assert.*;
  */
 public class MarkdownTest {
 
-    @Test
+    private final Formatter sut = new Markdown();
+
+    @Test @Ignore
     public void testTitle() {
     }
 
-    @Test
+    @Test @Ignore
     public void testText() {
     }
 
-    @Test
+    @Test @Ignore
     public void testIface() {
     }
 
-    @Test
+    @Test @Ignore
     public void testIementation() {
     }
 
     @Test
     public void testNl() {
+        assertThat(sut.nl(), is(equalTo(System.getProperty("line.separator"))));
     }
 
 }

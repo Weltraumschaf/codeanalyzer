@@ -43,7 +43,7 @@ class PlainText implements Formatter {
     }
 
     @Override
-    public Object nl() {
+    public String nl() {
         return String.format("%n");
     }
 

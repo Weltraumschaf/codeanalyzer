@@ -35,6 +35,7 @@ import java.util.List;
  */
 public final class App {
 
+
     /**
      * Command line arguments.
      */
@@ -130,9 +131,17 @@ public final class App {
     }
 
     private void generateTestData(final UnitCollector data) {
-        final Interface ifaceFoo = new Interface(Package.create("foo.bar.baz"), "Foo");
+        final Package pkg = Package.create("foo.bar.baz");
+        final Interface ifaceFoo = new Interface(pkg, "Foo");
         data.addInterface(ifaceFoo);
-        final Interface ifaceBar = new Interface(Package.create("foo.bar.baz"), "Bar");
+        final Class classFooImplA = new Class(pkg, "FooImplA");
+        classFooImplA.implement(ifaceFoo);
+        data.addClass(classFooImplA);
+        final Class classFooImplB = new Class(pkg, "FooImplB");
+        classFooImplB.implement(ifaceFoo);
+        data.addClass(classFooImplB
+                );
+        final Interface ifaceBar = new Interface(pkg, "Bar");
         data.addInterface(ifaceBar);
     }
 

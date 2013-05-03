@@ -23,7 +23,7 @@ public interface Unit {
      *
      * @return containing package
      */
-    Package getContainingPackage();
+    Package getPackage();
 
     /**
      * Get the name.

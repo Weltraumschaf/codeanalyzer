@@ -31,6 +31,6 @@ public interface Formatter {
 
     public String iementation(Class clazz);
 
-    public Object nl();
+    public String nl();
 
 }
