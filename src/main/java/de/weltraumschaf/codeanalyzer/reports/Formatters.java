@@ -58,4 +58,8 @@ public final class Formatters {
         return new PlainText();
     }
 
+    public static Formatter createDot() {
+        return new Dot();
+    }
+
 }

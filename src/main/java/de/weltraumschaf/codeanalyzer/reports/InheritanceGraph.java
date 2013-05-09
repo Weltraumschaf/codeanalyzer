@@ -12,22 +12,14 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.UnitCollector;
-
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class InheritanceGraph implements Report {
+class InheritanceGraph extends BaseReport {
 
-    @Override
-    public void setData(UnitCollector data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setFormatter(Formatter fmt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public InheritanceGraph() {
+        super(Formatters.createDot());
     }
 
     @Override

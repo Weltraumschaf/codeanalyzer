@@ -26,7 +26,7 @@ import java.util.Collection;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class PackageEncapsulation implements Report {
+class PackageEncapsulation extends BaseReport {
 
     /**
      * Collected data from which the report will be generated.
@@ -41,36 +41,7 @@ class PackageEncapsulation implements Report {
      * Convenience constructor which initializes {@link #formatt} with {@link Formatters#createDefault()}.
      */
     public PackageEncapsulation() {
-        this(Formatters.createDefault());
-    }
-
-    /**
-     * Dedicated constructor.
-     *
-     * @param fmt used to format the output string
-     * CHECKSTYLE:OFF
-     * @throws NullPointerException if fmt is {@code null}
-     * CHECKSTYLE:ON
-     */
-    public PackageEncapsulation(final Formatter fmt) {
-        super();
-
-        if (null == fmt) {
-            throw new NullPointerException("Formatter must not be null!");
-        }
-
-        this.formatt = fmt;
-    }
-
-
-    @Override
-    public void setData(final UnitCollector data) {
-        this.data = data;
-    }
-
-    @Override
-    public void setFormatter(final Formatter fmt) {
-        this.formatt = fmt;
+        super(Formatters.createDefault());
     }
 
     @Override
