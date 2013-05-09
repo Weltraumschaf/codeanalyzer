@@ -105,7 +105,8 @@ final class Visitor extends ASTVisitor {
             throw new IllegalArgumentException("Not an interfcae type declaration given!");
         }
 
-        final Interface iface = new Interface(pkg, node.getName().toString(), determineVisibility(node));
+        final Modifiers modifiers = Modifiers.create(node);
+        final Interface iface = new Interface(pkg, node.getName().toString(), modifiers.getVisibility());
         iface.setPosition(createPosition(node.getName()));
 
         if (data.hasInterface(iface.getFullQualifiedName())) {
@@ -129,11 +130,12 @@ final class Visitor extends ASTVisitor {
             throw new IllegalArgumentException("Not an class type declaration given!");
         }
 
+        final Modifiers modifiers = Modifiers.create(node);
         final Class clazz = new Class(
             pkg,
             node.getName().toString(),
-            determineVisibility(node),
-            determineAbstractness(node));
+            modifiers.getVisibility(),
+            modifiers.isAbstract());
         clazz.setPosition(createPosition(node.getName()));
         data.addClass(clazz);
 
@@ -156,46 +158,6 @@ final class Visitor extends ASTVisitor {
 
             implemented.addImplementation(clazz);
         }
-    }
-
-    /**
-     * Inspects a given type declaration node whether it is abstract or not.
-     *
-     * @param node type declaration node to inspect
-     * @return {@code true} if node is an abstract class, else {@code false}
-     */
-    private boolean determineAbstractness(final TypeDeclaration node) {
-        final List<Modifier> mods = node.modifiers();
-
-        for (final Modifier m : mods) {
-            if (m.isAbstract()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Inspects a given type declaration and determines the visibility.
-     *
-     * @param node type declaration node to inspect
-     * @return if no modifier was found it returns {@link Visibility#PACKAGE} as default
-     */
-    private Visibility determineVisibility(final TypeDeclaration node) {
-        final List<Modifier> mods = node.modifiers();
-
-        for (final Modifier m : mods) {
-            if (m.isPrivate()) {
-                return Visibility.PRIVATE;
-            } else if (m.isProtected()) {
-                return Visibility.PROTECTED;
-            } else if (m.isPublic()) {
-                return Visibility.PUBLIC;
-            }
-        }
-
-        return Visibility.PACKAGE;
     }
 
     /**
