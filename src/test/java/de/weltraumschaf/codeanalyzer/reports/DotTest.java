@@ -9,33 +9,32 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
+
 package de.weltraumschaf.codeanalyzer.reports;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 /**
- * Factory to create {@link Report reports}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public final class Reports {
+public class DotTest {
 
-    /**
-     * Hidden because pure static factory.
-     */
-    private Reports() {
-        super();
+    @Test
+    public void testStart() {
     }
 
-    /**
-     * Gives a {@link Report} which analyzes {@link PackageEncapsulation package encapsulation}.
-     *
-     * @return always new instance
-     */
-    public static Report createPackageEncapsulation() {
-        return new PackageEncapsulation();
+    @Test
+    public void testEnd() {
     }
 
-    public static Report createInheritanceGraph() {
-        return new InheritanceGraph();
+    @Test
+    public void testIface() {
+    }
+
+    @Test
+    public void testImplementation() {
     }
 
 }

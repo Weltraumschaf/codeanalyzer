@@ -22,6 +22,18 @@ import de.weltraumschaf.codeanalyzer.Interface;
 public interface Formatter {
 
     /**
+     * Start of whole formatted output.
+     *
+     * @return string with whole formatted output begins
+     */
+    String start();
+    /**
+     * End of whole formatted output.
+     *
+     * @return string with whole formatted output ends
+     */
+    String end();
+    /**
      * Format a title.
      *
      * @param title to format

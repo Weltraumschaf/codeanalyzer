@@ -113,11 +113,11 @@ public final class App {
      */
     private UnitCollector collectData(final Collection<File> files) throws IOException {
         final UnitCollector data = new UnitCollector();
-//        final JavaFileAnalyzer analyzer = new JavaFileAnalyzer(data);
+        final JavaFileAnalyzer analyzer = new JavaFileAnalyzer(data);
 
-//        for (final File file : files) {
-//            analyzer.analyze(file);
-//        }
+        for (final File file : files) {
+            analyzer.analyze(file);
+        }
 
         generateTestData(data);
         return data;

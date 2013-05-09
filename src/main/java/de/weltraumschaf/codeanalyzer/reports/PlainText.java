@@ -106,8 +106,4 @@ class PlainText extends BaseFormatter {
         return String.format(" ^%n");
     }
 
-    @Override
-    public String nl() {
-        return String.format("%n");
-    }
 }

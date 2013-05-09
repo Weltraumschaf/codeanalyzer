@@ -12,6 +12,8 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
+import de.weltraumschaf.codeanalyzer.Interface;
+
 /**
  * Basic formatter functionality.
  *
@@ -37,8 +39,6 @@ abstract class BaseFormatter implements Formatter {
                     ? ""
                     : input.trim();
     }
-
-
 
     @Override
     public void setIndentationPattern(final String pattern) {
@@ -82,6 +82,46 @@ abstract class BaseFormatter implements Formatter {
         }
 
         return buf.toString();
+    }
+
+    @Override
+    public String title(final String title) {
+        return "";
+    }
+
+    @Override
+    public String text(final String text) {
+        return "";
+    }
+
+    @Override
+    public String iface(final Interface iface) {
+        return "";
+    }
+
+    @Override
+    public String implementation(final de.weltraumschaf.codeanalyzer.Class clazz) {
+        return "";
+    }
+
+    @Override
+    public String implementation() {
+        return "";
+    }
+
+    @Override
+    public String nl() {
+        return String.format("%n");
+    }
+
+    @Override
+    public String start() {
+        return "";
+    }
+
+    @Override
+    public String end() {
+        return "";
     }
 
 }
