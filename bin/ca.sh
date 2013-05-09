@@ -1,4 +1,4 @@
 #!/bin/bash
 
-java -jar code-analyzer.jar $*
+java -jar ./code-analyzer.jar $*
 
