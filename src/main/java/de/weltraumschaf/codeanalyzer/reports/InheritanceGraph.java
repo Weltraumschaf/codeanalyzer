@@ -12,6 +12,9 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
+import de.weltraumschaf.codeanalyzer.Interface;
+import de.weltraumschaf.codeanalyzer.Class;
+
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
@@ -24,7 +27,22 @@ class InheritanceGraph extends BaseReport {
 
     @Override
     public String generate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final StringBuilder buf = new StringBuilder();
+        buf.append(format.start());
+        format.indent();
+
+        for (final Interface iface : data.getInterfaces()) {
+            buf.append(format.iface(iface));
+        }
+
+        for (final Class clazz : data.getClasses()) {
+            buf.append(format.implementation(clazz));
+        }
+
+        // TODO implement edges
+        format.exdent();
+        buf.append(format.end());
+        return buf.toString();
     }
 
 }

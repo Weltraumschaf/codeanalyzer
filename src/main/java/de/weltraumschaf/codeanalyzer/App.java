@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,12 +37,13 @@ import org.apache.commons.cli.PosixParser;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class App {
+    private static final String ENCODING = "utf-8";
     /**
      * Usage header.
      *
      * FIXME Better formatting with newlines.
      */
-    static final String HEADER = String.format("%n"
+    private static final String HEADER = String.format("%n"
         + "This command line tool analyzes Java source files and generates various reports.%n%n");
 
     /**
@@ -56,7 +58,7 @@ public final class App {
     /**
      * Usage footer.
      */
-    private static final String FOOTER = String.format("%nWritten 2013 by %s%nWrite bugs to %s",
+    private static final String FOOTER = String.format("%nWritten 2013 by %s%nReport bugs to %s",
                                                        AUTHOR, ISSUE_TRACKER);
 
     /**
@@ -124,11 +126,11 @@ public final class App {
      * @param out print stream for STDOUT
      * @param err print stream for STDERR
      */
-    private App(final String[] args, final PrintStream out, final PrintStream err) {
+    private App(final String[] args, final PrintStream out, final PrintStream err) throws UnsupportedEncodingException {
         super();
         this.args = args;
-        this.out = out;
-        this.err = err;
+        this.out = new PrintStream(out, true, ENCODING);
+        this.err = new PrintStream(err, true, ENCODING);
         this.version = new Version("/de/weltraumschaf/codeanalyzer/version.properties");
     }
 
@@ -137,7 +139,7 @@ public final class App {
      *
      * @param args command line arguments
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws UnsupportedEncodingException {
         final App app = new App(args, System.out, System.err);
         System.exit(app.run());
     }

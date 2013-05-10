@@ -13,6 +13,7 @@
 package de.weltraumschaf.codeanalyzer;
 
 import com.google.common.collect.Maps;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -99,7 +100,7 @@ public final class UnitCollector {
      * @return collection of interfaces
      */
     public Collection<Interface> getInterfaces() {
-        return interfaces.values();
+        return new ArrayList<Interface>(interfaces.values());
     }
 
     /**
@@ -148,4 +149,12 @@ public final class UnitCollector {
         classes.put(fullQualifiedName, clazz);
     }
 
+    /**
+     * Get all collected classes.
+     *
+     * @return collection of classes
+     */
+    public Collection<Class> getClasses() {
+        return new ArrayList<Class>(classes.values());
+    }
 }

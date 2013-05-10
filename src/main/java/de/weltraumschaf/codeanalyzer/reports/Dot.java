@@ -45,44 +45,41 @@ class Dot extends BaseFormatter {
     static Stereotype mapVisibility(final Visibility visibility) {
         return lookup.get(visibility);
     }
-    
+
     @Override
     public String start() {
-        return START;
+        return String.format(START);
     }
 
     @Override
     public String end() {
-        return END;
+        return String.format(END);
     }
 
     @Override
     public String iface(final Interface iface) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final StringBuilder label = new StringBuilder();
+        label.append(Stereotype.INTERFACE);
+        label.append("\\n");
+        label.append(mapVisibility(iface.getVisibility()));
+        label.append("\\n");
+        return indention() + formatNode(iface, label.toString());
     }
 
     @Override
     public String implementation(final Class clazz) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    String formatNode(final Interface iface) {
-        final StringBuilder label = new StringBuilder();
-        label.append(Stereotype.INTERFACE);
-        label.append(mapVisibility(iface.getVisibility()));
-        return formatNode(iface, label.toString());
-    }
-
-    String formatNode(final Class clazz) {
         final StringBuilder label = new StringBuilder();
         label.append(Stereotype.CLASS);
+        label.append("\\n");
         label.append(mapVisibility(clazz.getVisibility()));
+        label.append("\\n");
 
         if (clazz.isAbstract()) {
             label.append(Stereotype.ABSTRACT);
+            label.append("\\n");
         }
 
-        return formatNode(clazz, label.toString());
+        return  indention() + formatNode(clazz, label.toString());
     }
 
     String formatNode(final Unit unit, final String label) {
@@ -91,13 +88,26 @@ class Dot extends BaseFormatter {
 
     private enum Stereotype {
 
-        INTERFACE("≪interface≫%n"),
-        CLASS("≪class≫%n"),
-        ABSTRACT("≪abstract≫%n"),
-        PUBLIC("≪public≫%n"),
-        PACKAGE("≪package≫%n"),
-        PROTECTED("≪protected≫%n"),
-        PRIVATE("≪private≫%n");
+        INTERFACE("interface"),
+        CLASS("class"),
+        ABSTRACT("abstract"),
+        PUBLIC("public"),
+        PACKAGE("package"),
+        PROTECTED("protected"),
+        PRIVATE("private");
+
+        /**
+         * ≪.
+         *
+         * http://www.fileformat.info/info/unicode/char/ab/index.htm
+         */
+        private static final String LAQUO = "\u00ab";
+        /**
+         * ≫.
+         *
+         * http://www.fileformat.info/info/unicode/char/00bb/index.htm
+         */
+        private static final String RAQUO = "\u00bb";
         private final String str;
 
         private Stereotype(String str) {
@@ -106,7 +116,7 @@ class Dot extends BaseFormatter {
 
         @Override
         public String toString() {
-            return str;
+            return LAQUO + str + RAQUO;
         }
     }
 

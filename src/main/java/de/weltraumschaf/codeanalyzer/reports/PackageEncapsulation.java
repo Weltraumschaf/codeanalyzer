@@ -29,15 +29,6 @@ import java.util.Collection;
 class PackageEncapsulation extends BaseReport {
 
     /**
-     * Collected data from which the report will be generated.
-     */
-    private UnitCollector data;
-    /**
-     * Used to format the output string.
-     */
-    private Formatter formatt;
-
-    /**
      * Convenience constructor which initializes {@link #formatt} with {@link Formatters#createDefault()}.
      */
     public PackageEncapsulation() {
@@ -47,29 +38,29 @@ class PackageEncapsulation extends BaseReport {
     @Override
     public String generate() {
         final StringBuilder buf = new StringBuilder();
-        buf.append(formatt.title("Package encapsulation"));
+        buf.append(format.title("Package encapsulation"));
         final Collection<Interface> ifaces = data.getInterfaces();
 
         if (ifaces.isEmpty()) {
-            buf.append(formatt.text("No data to generate report for."));
+            buf.append(format.text("No data to generate report for."));
             return buf.toString();
         }
 
         for (final Interface iface : ifaces) {
-            buf.append(formatt.iface(iface));
+            buf.append(format.iface(iface));
             final Collection<Class> implementations = iface.getImplementations();
 
             if (implementations.isEmpty()) {
-                buf.append(formatt.text("No implementations."));
+                buf.append(format.text("No implementations."));
             } else {
-                buf.append(formatt.implementation());
+                buf.append(format.implementation());
 
                 for (final Class clazz : implementations) {
-                    buf.append(formatt.implementation(clazz));
+                    buf.append(format.implementation(clazz));
                 }
             }
 
-            buf.append(formatt.nl());
+            buf.append(format.nl());
         }
 
         return buf.toString();
