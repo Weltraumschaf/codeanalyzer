@@ -18,8 +18,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -57,13 +59,37 @@ public final class App {
     private static final String FOOTER = String.format("%nWritten 2013 by %s%nWrite bugs to %s",
                                                        AUTHOR, ISSUE_TRACKER);
 
+    /**
+     * Short option for help.
+     */
     private static final String OPT_SHORT_HELP = "h";
+    /**
+     * Short option for version.
+     */
     private static final String OPT_SHORT_VERSION = "v";
+    /**
+     * Short option for inheritance graph.
+     */
     private static final String OPT_SHORT_INHERITANCE_GRAPH = "i";
+    /**
+     * Short option for package encapsulation.
+     */
     private static final String OPT_SHORT_PACKAGE_ENCAPSULATION = "p";
+    /**
+     * Long option for help.
+     */
     private static final String OPT_LONG_HELP = "help";
+    /**
+     * Long option for version.
+     */
     private static final String OPT_LONG_VERSION = "version";
+    /**
+     * Long option for inheritance graph.
+     */
     private static final String OPT_LONG_INHERITANCEGRAPH = "inheritance-graph";
+    /**
+     * Long option for package encapsulation.
+     */
     private static final String OPT_LONG_PACKAGE_ENCAPSULATION = "package-encapsulation";
 
     /**
@@ -78,7 +104,13 @@ public final class App {
      * STDERR.
      */
     private final PrintStream err;
+    /**
+     * Command line options.
+     */
     private final Options options = new Options();
+    /**
+     * Command line argument parser.
+     */
     private final CommandLineParser parser = new PosixParser();
     /**
      * Version information.
@@ -134,17 +166,103 @@ public final class App {
         }
     }
 
+    private int run(CommandLine cmd) {
+        if (cmd.hasOption(OPT_SHORT_HELP) || cmd.hasOption(OPT_LONG_HELP)) {
+            help(new HelpFormatter(), out);
+            return 0;
+        }
+
+        if (cmd.hasOption(OPT_SHORT_VERSION) || cmd.hasOption(OPT_LONG_VERSION)) {
+            out.println(version);
+            return 0;
+        }
+
+        final Collection<File> files = readSourceFiles(cmd.getArgList());
+        final UnitCollector data;
+
+        try {
+            data = collectData(files);
+        } catch (IOException ex) {
+            err.println(ex.getMessage());
+            return 1;
+        }
+
+        if (cmd.hasOption(OPT_SHORT_INHERITANCE_GRAPH) || cmd.hasOption(OPT_LONG_INHERITANCEGRAPH)) {
+            inheritanceGraph(data);
+        } else if (cmd.hasOption(OPT_SHORT_INHERITANCE_GRAPH) || cmd.hasOption(OPT_LONG_INHERITANCEGRAPH)) {
+            packageEncapsulationReport(data);
+        } else {
+            out.println("Do nothing.");
+        }
+
+        return 0;
+    }
+
+    /**
+     * Configure option parsing.
+     *
+     * <pre>
+     * -h|--help
+     * -v|--version
+     * -e|--encoding ENCODING
+     * </pre>
+     */
+    private void configureOptions() {
+        // w/ argument
+        options.addOption(OptionBuilder.withDescription("Input file encoding.")
+                                       .withArgName("ENCODING")
+                                       .hasArg()
+                                       .withLongOpt("--encoding")
+                                       .create("e"));
+        // w/o argument
+        options.addOption(OPT_SHORT_HELP, OPT_LONG_HELP, false, "Show this help.");
+        options.addOption(OPT_SHORT_VERSION, OPT_LONG_VERSION, false, "Show version.");
+        options.addOption(OPT_SHORT_INHERITANCE_GRAPH, OPT_LONG_INHERITANCEGRAPH, false,
+                "Generates inheritance graph in DOT language format.");
+        options.addOption(OPT_SHORT_PACKAGE_ENCAPSULATION, OPT_LONG_PACKAGE_ENCAPSULATION, false,
+                "Generates package encapsualtion report.");
+    }
+
+    /**
+     * Print help message to output stream.
+     *
+     * @param formatter used to format
+     * @param out where to print help
+     */
+    private void help(final HelpFormatter formatter, final PrintStream out) {
+        final PrintWriter writer = new PrintWriter(out);
+        formatter.printHelp(
+            writer,
+            HelpFormatter.DEFAULT_WIDTH,
+            "ca.sh",
+            HEADER,
+            options,
+            HelpFormatter.DEFAULT_LEFT_PAD,
+            HelpFormatter.DEFAULT_DESC_PAD,
+            FOOTER,
+            true);
+        writer.flush();
+    }
+
     /**
      * Read all files from the directory given as first CLI argument.
      *
+     * @param leftOverArgs all not jet parsed arguments are treated as files
      * @return collection of files, never {@code null}, maybe empty collection
      */
-    private Collection<File> readSourceFiles() {
-//        if (args.isEmpty()) {
+    private Collection<File> readSourceFiles(final List<String> leftOverArgs) {
+        if (leftOverArgs.isEmpty()) {
             return Collections.emptyList();
-//        }
-//
-//        return new FileFinder().findJava(new File(args.get(0)));
+        }
+
+        final Collection<File> files = new ArrayList<File>();
+        final FileFinder finder = new FileFinder();
+
+        for (final String arg : leftOverArgs) {
+            files.addAll(finder.findJava(new File(arg)));
+        }
+
+        return files;
     }
 
     /**
@@ -194,76 +312,6 @@ public final class App {
         final Class classBazImplA = new Class(pkg, "BazImplA");
         data.addClass(classBazImplA);
         classBazImplA.implement(ifaceBaz);
-    }
-
-    /**
-     * Configure option parsing.
-     *
-     * <pre>
-     * -h|--help
-     * -v|--version
-     * -e|--encoding ENCODING
-     * </pre>
-     */
-    private void configureOptions() {
-        // w/ argument
-        options.addOption(OptionBuilder.withDescription("Input file encoding.")
-                                       .withArgName("ENCODING")
-                                       .hasArg()
-                                       .withLongOpt("--encoding")
-                                       .create("e"));
-        // w/o argument
-        options.addOption(OPT_SHORT_HELP, OPT_LONG_HELP, false, "Show this help.");
-        options.addOption(OPT_SHORT_VERSION, OPT_LONG_VERSION, false, "Show version.");
-        options.addOption(OPT_SHORT_INHERITANCE_GRAPH, OPT_LONG_INHERITANCEGRAPH, false, "Generates inheritance graph in DOT language format.");
-        options.addOption(OPT_SHORT_PACKAGE_ENCAPSULATION, OPT_LONG_PACKAGE_ENCAPSULATION, false, "Generates package encapsualtion report.");
-    }
-
-    private int run(CommandLine cmd) {
-        if (cmd.hasOption(OPT_SHORT_HELP) || cmd.hasOption(OPT_LONG_HELP)) {
-            help(new HelpFormatter(), out);
-            return 0;
-        }
-
-        if (cmd.hasOption(OPT_SHORT_VERSION) || cmd.hasOption(OPT_LONG_VERSION)) {
-            out.println(version);
-            return 0;
-        }
-
-        final Collection<File> files = readSourceFiles();
-        final UnitCollector data;
-
-        try {
-            data = collectData(files);
-        } catch (IOException ex) {
-            err.println(ex.getMessage());
-            return 1;
-        }
-
-        if (cmd.hasOption(OPT_SHORT_INHERITANCE_GRAPH) || cmd.hasOption(OPT_LONG_INHERITANCEGRAPH)) {
-            inheritanceGraph(data);
-        } else if (cmd.hasOption(OPT_SHORT_INHERITANCE_GRAPH) || cmd.hasOption(OPT_LONG_INHERITANCEGRAPH)) {
-            packageEncapsulationReport(data);
-        } else {
-            out.println("Do nothing.");
-        }
-
-        return 0;
-    }
-
-    public void help(final HelpFormatter formatter, final PrintStream out) {
-        final PrintWriter writer = new PrintWriter(out);
-        formatter.printHelp(
-            writer,
-            HelpFormatter.DEFAULT_WIDTH,
-            "ca.sh",
-            HEADER,
-            options,
-            HelpFormatter.DEFAULT_LEFT_PAD,
-            HelpFormatter.DEFAULT_DESC_PAD,
-            FOOTER,
-            true);
-        writer.flush();
     }
 
     private void inheritanceGraph(final UnitCollector data) {
