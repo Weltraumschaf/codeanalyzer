@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
 import com.google.common.collect.Maps;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public final class Interface extends BaseUnit {
+public final class InterfaceType extends BaseType {
 
     /**
      * Hold all interface which this one extends.
@@ -31,10 +31,10 @@ public final class Interface extends BaseUnit {
      *  <dt>Key
      *  <dd>Full qualified name
      *  <dt>Value
-     *  <dd>Interface object
+     *  <dd>InterfaceType object
      * </dl>
      */
-    private final Map<String, Interface> extendingInterfaces = Maps.newHashMap();
+    private final Map<String, InterfaceType> extendingInterfaces = Maps.newHashMap();
     /**
      * Hold all interface which extends this one.
      *
@@ -42,10 +42,10 @@ public final class Interface extends BaseUnit {
      *  <dt>Key
      *  <dd>Full qualified name
      *  <dt>Value
-     *  <dd>Interface object
+     *  <dd>InterfaceType object
      * </dl>
      */
-    private final Map<String, Interface> extendedByInterfaces = Maps.newHashMap();
+    private final Map<String, InterfaceType> extendedByInterfaces = Maps.newHashMap();
     /**
      * Holds all classes which implement this interface.
      *
@@ -53,10 +53,10 @@ public final class Interface extends BaseUnit {
      *  <dt>Key
      *  <dd>Full qualified name
      *  <dt>Value
-     *  <dd>Class object
+     *  <dd>ClassType object
      * </dl>
      */
-    private final Map<String, Class> implementations = Maps.newHashMap();
+    private final Map<String, ClassType> implementations = Maps.newHashMap();
 
     /**
      * Convenience constructor which initializes the visibility w/ {@link Visibility#PUBLIC}.
@@ -64,7 +64,7 @@ public final class Interface extends BaseUnit {
      * @param containingPackage package which contains the unit
      * @param name of the interface
      */
-    public Interface(final Package containingPackage, final String name) {
+    public InterfaceType(final Package containingPackage, final String name) {
         this(containingPackage, name, Visibility.PUBLIC);
     }
 
@@ -75,11 +75,11 @@ public final class Interface extends BaseUnit {
      * @param name the interface
      * @param visibility visibility of the interface
      */
-    public Interface(final Package containingPackage, final String name, final Visibility visibility) {
+    public InterfaceType(final Package containingPackage, final String name, final Visibility visibility) {
         super(containingPackage, name, visibility);
     }
 
-    public void extendedBy(final Interface iface) {
+    public void extendedBy(final InterfaceType iface) {
         extendedByInterfaces.put(iface.getFullQualifiedName(), iface);
     }
 
@@ -87,7 +87,7 @@ public final class Interface extends BaseUnit {
         return !extendedByInterfaces.isEmpty();
     }
 
-    public Collection<Interface> getExtendingInterfaces() {
+    public Collection<InterfaceType> getExtendingInterfaces() {
         return extendedByInterfaces.values();
     }
 
@@ -96,7 +96,7 @@ public final class Interface extends BaseUnit {
      *
      * @param iface extended interface
      */
-    public void extend(final Interface iface) {
+    public void extend(final InterfaceType iface) {
         extendingInterfaces.put(iface.getFullQualifiedName(), iface);
         iface.extendedBy(this);
     }
@@ -122,7 +122,7 @@ public final class Interface extends BaseUnit {
      * @throws IllegalArgumentException if this interface does not extendedClass the given interface
      * CHECKSTYLE:ON
      */
-    public Interface getExtendedInterface(final String fullQualifiedName) {
+    public InterfaceType getExtendedInterface(final String fullQualifiedName) {
         if (!doesExtend(fullQualifiedName)) {
             throw new IllegalArgumentException(
                 String.format("Interface %s does not extend %s!", getFullQualifiedName(), fullQualifiedName));
@@ -131,7 +131,7 @@ public final class Interface extends BaseUnit {
         return extendingInterfaces.get(fullQualifiedName);
     }
 
-    public Collection<Interface> getExtendedInterfaces() {
+    public Collection<InterfaceType> getExtendedInterfaces() {
         return extendingInterfaces.values();
     }
 
@@ -143,7 +143,7 @@ public final class Interface extends BaseUnit {
      *
      * @param implementation implementing class
      */
-    public void addImplementation(final Class implementation) {
+    public void addImplementation(final ClassType implementation) {
         implementations.put(implementation.getFullQualifiedName(), implementation);
         // Must be afterwards to prevent endless loop.
         if (!implementation.doesImplement(this)) {
@@ -165,7 +165,7 @@ public final class Interface extends BaseUnit {
      *
      * @return collection of implementing classes
      */
-    public Collection<Class> getImplementations() {
+    public Collection<ClassType> getImplementations() {
         return implementations.values();
     }
 
@@ -177,7 +177,7 @@ public final class Interface extends BaseUnit {
      * @return {@code true} if the interface has this class as implementation, else {@code false}
      */
     @SuppressWarnings(value = "OCP_OVERLY_CONCRETE_PARAMETER", justification = "Only class can be an implementaion.")
-    public boolean hasImplementation(final Class clazz) {
+    public boolean hasImplementation(final ClassType clazz) {
         return hasImplementation(clazz.getFullQualifiedName());
     }
 
@@ -192,8 +192,8 @@ public final class Interface extends BaseUnit {
     }
 
     @Override
-    public void update(final Unit unit) {
-        if (!(unit instanceof Interface)) {
+    public void update(final Type unit) {
+        if (!(unit instanceof InterfaceType)) {
             return;
         }
 

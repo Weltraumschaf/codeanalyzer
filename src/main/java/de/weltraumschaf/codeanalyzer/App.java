@@ -11,6 +11,9 @@
  */
 package de.weltraumschaf.codeanalyzer;
 
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
+import de.weltraumschaf.codeanalyzer.types.Package;
 import de.weltraumschaf.codeanalyzer.reports.Report;
 import de.weltraumschaf.codeanalyzer.reports.Reports;
 import de.weltraumschaf.commons.Version;
@@ -293,25 +296,25 @@ public final class App {
      */
     private void generateTestData(final UnitCollector data) {
         final Package pkg = Package.create("foo.bar.baz");
-        final Interface ifaceFoo = new Interface(pkg, "Foo");
+        final InterfaceType ifaceFoo = new InterfaceType(pkg, "Foo");
         data.addInterface(ifaceFoo);
 
-        final Class classFooImplA = new Class(pkg, "FooImplA");
+        final ClassType classFooImplA = new ClassType(pkg, "FooImplA");
         classFooImplA.implement(ifaceFoo);
         data.addClass(classFooImplA);
-        final Class classFooImplB = new Class(pkg, "FooImplB");
+        final ClassType classFooImplB = new ClassType(pkg, "FooImplB");
         classFooImplB.implement(ifaceFoo);
         data.addClass(classFooImplB);
 
-        final Interface ifaceBar = new Interface(pkg, "Bar");
+        final InterfaceType ifaceBar = new InterfaceType(pkg, "Bar");
         data.addInterface(ifaceBar);
         classFooImplB.implement(ifaceBar);
 
-        final Interface ifaceBaz = new Interface(pkg, "Baz");
+        final InterfaceType ifaceBaz = new InterfaceType(pkg, "Baz");
         data.addInterface(ifaceBaz);
         ifaceBaz.extend(ifaceBar);
 
-        final Class classBazImplA = new Class(pkg, "BazImplA");
+        final ClassType classBazImplA = new ClassType(pkg, "BazImplA");
         data.addClass(classBazImplA);
         classBazImplA.implement(ifaceBaz);
     }

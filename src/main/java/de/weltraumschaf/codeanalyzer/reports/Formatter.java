@@ -11,8 +11,8 @@
  */
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Class;
-import de.weltraumschaf.codeanalyzer.Interface;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 
 /**
  * Formatter for a report.
@@ -53,16 +53,16 @@ public interface Formatter {
      * @param iface to format
      * @return formatted string
      */
-    String iface(Interface iface);
+    String iface(InterfaceType iface);
     /**
      * Format a implementation.
      *
      * @param clazz to format
      * @return formatted string
      */
-    String implementation(Class clazz);
+    String implementation(ClassType clazz);
     /**
-     * Formats a string used before the first {@link #implementation(de.weltraumschaf.codeanalyzer.Class)
+     * Formats a string used before the first {@link #implementation(de.weltraumschaf.codeanalyzer.ClassType)
      * implementation}.
      *
      * @return formatted string

@@ -11,7 +11,7 @@
  */
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Interface;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 
 /**
  * Formatter to generate Markdown reports.
@@ -31,7 +31,7 @@ class Markdown extends BaseFormatter {
     }
 
     @Override
-    public String iface(Interface iface) {
+    public String iface(InterfaceType iface) {
         if (null == iface) {
             throw new NullPointerException("Interface must not be null!");
         }
@@ -40,7 +40,7 @@ class Markdown extends BaseFormatter {
     }
 
     @Override
-    public String implementation(final de.weltraumschaf.codeanalyzer.Class clazz) {
+    public String implementation(final de.weltraumschaf.codeanalyzer.types.ClassType clazz) {
         if (null == clazz) {
             throw new NullPointerException("Class must not be null!");
         }

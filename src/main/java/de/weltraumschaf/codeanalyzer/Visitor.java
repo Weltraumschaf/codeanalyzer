@@ -11,6 +11,10 @@
  */
 package de.weltraumschaf.codeanalyzer;
 
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
+import de.weltraumschaf.codeanalyzer.types.Package;
+import de.weltraumschaf.codeanalyzer.types.Position;
 import com.google.common.collect.Maps;
 import java.io.File;
 import java.util.List;
@@ -105,7 +109,7 @@ final class Visitor extends ASTVisitor {
         }
 
         final Modifiers modifiers = Modifiers.create(node);
-        final Interface iface = new Interface(pkg, node.getName().toString(), modifiers.getVisibility());
+        final InterfaceType iface = new InterfaceType(pkg, node.getName().toString(), modifiers.getVisibility());
         iface.setPosition(createPosition(node.getName()));
 
         if (data.hasInterface(iface.getFullQualifiedName())) {
@@ -130,7 +134,7 @@ final class Visitor extends ASTVisitor {
         }
 
         final Modifiers modifiers = Modifiers.create(node);
-        final Class clazz = new Class(
+        final ClassType clazz = new ClassType(
             pkg,
             node.getName().toString(),
             modifiers.getVisibility(),
@@ -140,16 +144,16 @@ final class Visitor extends ASTVisitor {
 
         for (final SimpleType t : (List<SimpleType>) node.superInterfaceTypes()) {
             final String name = t.getName().toString();
-            Interface implemented;
+            InterfaceType implemented;
 
             if (data.hasInterface(name)) {
                 implemented = data.getInterface(name);
             } else {
                 if (imports.containsKey(name)) {
-                    implemented = new Interface(Package.create(imports.get(name)), name);
+                    implemented = new InterfaceType(Package.create(imports.get(name)), name);
                 } else {
                     // No imports -> same package.
-                    implemented = new Interface(pkg, name);
+                    implemented = new InterfaceType(pkg, name);
                 }
 
                 data.addInterface(implemented);

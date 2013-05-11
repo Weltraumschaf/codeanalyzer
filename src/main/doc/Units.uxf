@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>300</x>
+      <y>0</y>
+      <w>250</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Type
+--
+--
+getPackage():Package
+getName():String
+getFullQualifiedName():String
+getPosition():Position
+setPosition(position:Position)
+getVisibility():Visibility
+update(other:Type)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>300</x>
+      <y>210</y>
+      <w>250</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>/BaseType/
+--
+-name:String
+--
+getPackage():Package
+getName():String
+getFullQualifiedName():String
+getPosition():Position
+setPosition(position:Position)
+getVisibility():Visibility
+update(other:Type)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>400</x>
+      <y>180</y>
+      <w>50</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>30;-10;30;-10</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>40</x>
+      <y>540</y>
+      <w>370</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>ClassType
+--
+-implementedInterfaces:Map&lt;String, InterfaceType&gt;
+-isAbstract:boolean
+-extendedClass:ClassType
+--
+implement(iface:InterfaceType)
+doesImplement(iface:InterfaceType):boolean
+doesImplement(fqn:String):boolean
+getInterface(fqn:String)InterfaceType
+interfaces():Collection&lt;InterfaceType&gt;
+extendedClass():ClassType
+doesExtendClass():boolean
+extend(cls:ClassType)
+isAbstract():boolean
+update(t:Type)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>420</x>
+      <y>540</y>
+      <w>360</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>InterfaceType
+--
+-extendingInterfaces:Map&lt;String, InterfaceType&gt;
+-extendedByInterfaces:Map&lt;String, InterfaceType&gt;
+-implementations:Map&lt;String, ClassType&gt;
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>200</x>
+      <y>350</y>
+      <w>240</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>220;30;220;110;30;110;30;190</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>390</x>
+      <y>350</y>
+      <w>230</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;110;210;110;210;190</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>750</x>
+      <y>100</y>
+      <w>240</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+Visibility
+--
+_PRIVATE_
+_PACKAGE_
+_PROTECTED_
+_PUBLIC_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>750</x>
+      <y>240</y>
+      <w>240</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;immutable&gt;&gt;
+Position
+--
+_#DEFAULT:Position_
+-fileName:String
+-lineNumber:int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>520</x>
+      <y>140</y>
+      <w>250</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=-
+r1=-visibility
+m2=1</panel_attributes>
+    <additional_attributes>30;130;180;130;180;30;230;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>520</x>
+      <y>270</y>
+      <w>250</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-
+r1=-position
+m2=1</panel_attributes>
+    <additional_attributes>30;30;230;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>750</x>
+      <y>370</y>
+      <w>240</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;immutable&gt;&gt;
+Package
+--
+-baseName:String
+--
+getBaseName():String
+getFullQualifiedName():String
+getParent()Package
+createSub(name:String):Package
+isRoot():boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>520</x>
+      <y>300</y>
+      <w>250</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=-
+r1=-containingPackage
+m2=1</panel_attributes>
+    <additional_attributes>30;30;180;30;180;160;230;160</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>960</x>
+      <y>390</y>
+      <w>120</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-
+r1=-parent
+m2=1</panel_attributes>
+    <additional_attributes>30;30;100;30;100;110;30;110</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>390</x>
+      <y>140</y>
+      <w>50</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>30;30;30;70</additional_attributes>
+  </element>
+</diagram>

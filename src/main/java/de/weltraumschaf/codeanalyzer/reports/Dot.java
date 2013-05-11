@@ -12,10 +12,10 @@
 package de.weltraumschaf.codeanalyzer.reports;
 
 import com.google.common.collect.Maps;
-import de.weltraumschaf.codeanalyzer.Class;
-import de.weltraumschaf.codeanalyzer.Interface;
-import de.weltraumschaf.codeanalyzer.Unit;
-import de.weltraumschaf.codeanalyzer.Visibility;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
+import de.weltraumschaf.codeanalyzer.types.Type;
+import de.weltraumschaf.codeanalyzer.types.Visibility;
 import java.util.Map;
 
 /**
@@ -57,7 +57,7 @@ class Dot extends BaseFormatter {
     }
 
     @Override
-    public String iface(final Interface iface) {
+    public String iface(final InterfaceType iface) {
         final StringBuilder label = new StringBuilder();
         label.append(Stereotype.INTERFACE);
         label.append("\\n");
@@ -67,7 +67,7 @@ class Dot extends BaseFormatter {
     }
 
     @Override
-    public String implementation(final Class clazz) {
+    public String implementation(final ClassType clazz) {
         final StringBuilder label = new StringBuilder();
         label.append(Stereotype.CLASS);
         label.append("\\n");
@@ -83,29 +83,29 @@ class Dot extends BaseFormatter {
     }
 
     /**
-     * Formats a {@link Unit} as Dot node.
+     * Formats a {@link Type} as Dot node.
      *
      * @param unit
      * @param label
      * @return
      */
-    String formatNode(final Unit unit, final String label) {
+    String formatNode(final Type unit, final String label) {
         return String.format("%s [label=\"%s%s\", shape=box];%n", unit.getName(), label, unit.getFullQualifiedName());
     }
 
     /**
-     * Helps formatting stereotypes of a {@link Unit type}.
+     * Helps formatting stereotypes of a {@link Type type}.
      *
      * A stereotype is represented by its value preceded by '≪' and followed by '≫'.
      */
     private enum Stereotype {
 
         /**
-         * Interface stereotype.
+         * InterfaceType stereotype.
          */
         INTERFACE("interface"),
         /**
-         * Class stereotype.
+         * ClassType stereotype.
          */
         CLASS("class"),
         /**

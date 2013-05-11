@@ -12,6 +12,8 @@
 
 package de.weltraumschaf.codeanalyzer;
 
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import com.google.common.collect.Maps;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,10 +33,10 @@ public final class UnitCollector {
      *  <dt>Key
      *  <dd>Full qualified name
      *  <dt>Value
-     *  <dd>Interface object
+     *  <dd>InterfaceType object
      * </dl>
      */
-    private Map<String, Interface> interfaces = Maps.newHashMap();
+    private Map<String, InterfaceType> interfaces = Maps.newHashMap();
     /**
      * Found classes.
      *
@@ -42,10 +44,10 @@ public final class UnitCollector {
      *  <dt>Key
      *  <dd>Full qualified name
      *  <dt>Value
-     *  <dd>Class object
+     *  <dd>ClassType object
      * </dl>
      */
-    private Map<String, Class> classes = Maps.newHashMap();
+    private Map<String, ClassType> classes = Maps.newHashMap();
 
     /**
      * Whether an interface is present in the collector.
@@ -66,7 +68,7 @@ public final class UnitCollector {
      * @throws IllegalArgumentException if interface was not added
      * CHECKSTYLE:ON
      */
-    public Interface getInterface(final String fullQualifiedName) {
+    public InterfaceType getInterface(final String fullQualifiedName) {
         if (!hasInterface(fullQualifiedName)) {
             throw new IllegalArgumentException(
                 String.format("Does not have interface with name %s!", fullQualifiedName));
@@ -83,7 +85,7 @@ public final class UnitCollector {
      * @throws IllegalArgumentException if interface w/ same full qualified name was already added
      * CHECKSTYLE:ON
      */
-    public void addInterface(final Interface iface) {
+    public void addInterface(final InterfaceType iface) {
         final String fullQualifiedName = iface.getFullQualifiedName();
 
         if (hasInterface(fullQualifiedName)) {
@@ -99,8 +101,8 @@ public final class UnitCollector {
      *
      * @return collection of interfaces
      */
-    public Collection<Interface> getInterfaces() {
-        return new ArrayList<Interface>(interfaces.values());
+    public Collection<InterfaceType> getInterfaces() {
+        return new ArrayList<InterfaceType>(interfaces.values());
     }
 
     /**
@@ -122,7 +124,7 @@ public final class UnitCollector {
      * @throws IllegalArgumentException if class was not added
      * CHECKSTYLE:ON
      */
-    public Class getClass(final String fullQualifiedName) {
+    public ClassType getClass(final String fullQualifiedName) {
         if (!hasClass(fullQualifiedName)) {
             throw new IllegalArgumentException(String.format("Does not have class with name %s!", fullQualifiedName));
         }
@@ -138,7 +140,7 @@ public final class UnitCollector {
      * @throws IllegalArgumentException if class w/ same full qualified name was already added
      * CHECKSTYLE:ON
      */
-    public void addClass(final Class clazz) {
+    public void addClass(final ClassType clazz) {
         final String fullQualifiedName = clazz.getFullQualifiedName();
 
         if (hasInterface(fullQualifiedName)) {
@@ -154,7 +156,7 @@ public final class UnitCollector {
      *
      * @return collection of classes
      */
-    public Collection<Class> getClasses() {
-        return new ArrayList<Class>(classes.values());
+    public Collection<ClassType> getClasses() {
+        return new ArrayList<ClassType>(classes.values());
     }
 }

@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
 /**
  * Describes the visibility of a {@link AbstractUnit}.

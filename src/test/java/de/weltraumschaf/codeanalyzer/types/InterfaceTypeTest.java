@@ -10,31 +10,35 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
+import de.weltraumschaf.codeanalyzer.types.Package;
+import de.weltraumschaf.codeanalyzer.types.Visibility;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Unit tests for {@link Interface}.
+ * Unit tests for {@link InterfaceType}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class InterfaceTest {
+public class InterfaceTypeTest {
 
     @Test
     public void getVisibility_isPackagePrivateByDefault() {
-        final Interface sut = new Interface(Package.NULL, "Foo");
+        final InterfaceType sut = new InterfaceType(Package.NULL, "Foo");
         assertThat(sut.getVisibility(), is(Visibility.PUBLIC));
     }
 
     @Test
     public void implementations() {
-        final Interface sut = new Interface(Package.NULL, "Foo");
+        final InterfaceType sut = new InterfaceType(Package.NULL, "Foo");
         assertThat(sut.getImplementations(), hasSize(0));
 
-        final Class impl1 = new Class(Package.NULL, "Bar");
+        final ClassType impl1 = new ClassType(Package.NULL, "Bar");
         assertThat(impl1.doesImplement(sut), is(equalTo(false)));
         sut.addImplementation(impl1);
         assertThat(impl1.doesImplement(sut), is(equalTo(true)));
@@ -42,7 +46,7 @@ public class InterfaceTest {
         assertThat(sut.getImplementations(), hasSize(1));
         assertThat(sut.getImplementations(), hasItem(impl1));
 
-        final Class impl2 = new Class(Package.NULL, "Baz");
+        final ClassType impl2 = new ClassType(Package.NULL, "Baz");
         assertThat(impl2.doesImplement(sut), is(equalTo(false)));
         sut.addImplementation(impl2);
         assertThat(impl1.doesImplement(sut), is(equalTo(true)));

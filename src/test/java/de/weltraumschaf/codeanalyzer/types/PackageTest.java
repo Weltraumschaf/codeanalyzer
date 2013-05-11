@@ -10,8 +10,9 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
+import de.weltraumschaf.codeanalyzer.types.Package;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

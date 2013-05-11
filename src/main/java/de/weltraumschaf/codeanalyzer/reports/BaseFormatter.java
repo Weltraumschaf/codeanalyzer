@@ -12,8 +12,8 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Interface;
-import de.weltraumschaf.codeanalyzer.Class;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
 
 /**
  * Basic formatter functionality.
@@ -96,12 +96,12 @@ abstract class BaseFormatter implements Formatter {
     }
 
     @Override
-    public String iface(final Interface iface) {
+    public String iface(final InterfaceType iface) {
         return "";
     }
 
     @Override
-    public String implementation(final Class clazz) {
+    public String implementation(final ClassType clazz) {
         return "";
     }
 

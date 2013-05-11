@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.codeanalyzer;
 
+import de.weltraumschaf.codeanalyzer.types.Visibility;
 import de.weltraumschaf.codeanalyzer.Modifiers.ModifierAdapter;
 import java.util.Collections;
 import java.util.HashSet;

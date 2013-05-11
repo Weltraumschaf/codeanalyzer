@@ -10,8 +10,12 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
+import de.weltraumschaf.codeanalyzer.types.Package;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.Visibility;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -19,11 +23,11 @@ import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
 /**
- * Unit tests for {@link Class}.
+ * Unit tests for {@link ClassType}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class ClassTest {
+public class ClassTypeTest {
 
     //CHECKSTYLE:OFF
     @Rule public ExpectedException thrown = ExpectedException.none();
@@ -31,23 +35,23 @@ public class ClassTest {
 
     @Test
     public void getVisibility_isPackagePrivateByDefault() {
-        final Class sut = new Class(Package.NULL, "Foo");
+        final ClassType sut = new ClassType(Package.NULL, "Foo");
         assertThat(sut.getVisibility(), is(Visibility.PACKAGE));
     }
 
     @Test
     public void isIsAbstract() {
-        Class sut = new Class(Package.NULL, "Foo");
+        ClassType sut = new ClassType(Package.NULL, "Foo");
         assertThat(sut.isAbstract(), is(equalTo(false)));
-        sut = new Class(Package.NULL, "Foo", Visibility.PRIVATE, true);
+        sut = new ClassType(Package.NULL, "Foo", Visibility.PRIVATE, true);
         assertThat(sut.isAbstract(), is(equalTo(true)));
     }
 
     @Test
     public void getAndSetExtendedClass() {
-        final Class sut = new Class(Package.NULL, "Foo");
+        final ClassType sut = new ClassType(Package.NULL, "Foo");
         assertThat(sut.extendedClass(), is(equalTo(null)));
-        final Class extended = new Class(Package.NULL, "Bar");
+        final ClassType extended = new ClassType(Package.NULL, "Bar");
         sut.extend(extended);
         assertThat(sut.extendedClass(), is(equalTo(extended)));
     }
@@ -55,10 +59,10 @@ public class ClassTest {
     @Test
     public void implement() {
         final Package pkg = Package.create("foo.bar");
-        final Class sut = new Class(pkg, "Foo");
+        final ClassType sut = new ClassType(pkg, "Foo");
         assertThat(sut.interfaces(), hasSize(0));
 
-        final Interface iface1 = new Interface(pkg, "Bar");
+        final InterfaceType iface1 = new InterfaceType(pkg, "Bar");
         assertThat(iface1.getImplementations(), hasSize(0));
         assertThat(sut.doesImplement(iface1), is(equalTo(false)));
 
@@ -70,7 +74,7 @@ public class ClassTest {
         assertThat(iface1.getImplementations(), hasSize(1));
         assertThat(iface1.getImplementations(), hasItem(sut));
 
-        final Interface iface2 = new Interface(pkg, "Baz");
+        final InterfaceType iface2 = new InterfaceType(pkg, "Baz");
         assertThat(iface2.getImplementations(), hasSize(0));
         assertThat(sut.doesImplement(iface2), is(equalTo(false)));
 
@@ -90,7 +94,7 @@ public class ClassTest {
     public void getInterface_throwsExceptionIfNotImplementing() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Class Foo does not implement foo.bar.Baz!");
-        final Class sut = new Class(Package.NULL, "Foo");
+        final ClassType sut = new ClassType(Package.NULL, "Foo");
         sut.getInterface("foo.bar.Baz");
     }
 }

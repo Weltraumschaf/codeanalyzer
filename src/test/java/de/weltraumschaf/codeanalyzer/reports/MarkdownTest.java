@@ -12,8 +12,8 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Interface;
-import de.weltraumschaf.codeanalyzer.Class;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class MarkdownTest {
 
     @Test
     public void testIface() {
-        final Interface iface = new Interface(de.weltraumschaf.codeanalyzer.Package.create("foo.bar"), "Baz");
+        final InterfaceType iface = new InterfaceType(de.weltraumschaf.codeanalyzer.types.Package.create("foo.bar"), "Baz");
         assertThat(sut.iface(iface), is(equalTo("    PUBLIC foo.bar.Baz" + NL)));
     }
 
@@ -72,7 +72,7 @@ public class MarkdownTest {
 
     @Test
     public void testIementation() {
-        final Class clazz = new Class(de.weltraumschaf.codeanalyzer.Package.create("foo.bar"), "Baz");
+        final ClassType clazz = new ClassType(de.weltraumschaf.codeanalyzer.types.Package.create("foo.bar"), "Baz");
         assertThat(sut.implementation(clazz), is(equalTo("     +- PACKAGE foo.bar.Baz" + NL)));
     }
 

@@ -11,6 +11,10 @@
  */
 package de.weltraumschaf.codeanalyzer;
 
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.Visibility;
+import de.weltraumschaf.codeanalyzer.types.Position;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import com.google.common.collect.Maps;
 import java.io.File;
 import java.io.IOException;
@@ -39,13 +43,13 @@ public class JavaFileAnalyzerTest {
         final File file = new File(resource.toURI());
         sut.analyze(file);
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.AbstractOne"), is(true));
-        final Class abstractOne = data.getClass("de.weltraumschaf.codeanalyzer.test.AbstractOne");
+        final ClassType abstractOne = data.getClass("de.weltraumschaf.codeanalyzer.test.AbstractOne");
         assertThat(abstractOne, notNullValue());
         assertThat(abstractOne.isAbstract(), is(true));
         assertThat(abstractOne.getVisibility(), is(Visibility.PACKAGE));
         assertThat(abstractOne.getPosition(), equalTo(new Position(file.getAbsolutePath(), 23)));
         assertThat(abstractOne.doesImplement("de.weltraumschaf.codeanalyzer.test.One"), is(true));
-        final Interface one = data.getInterface("de.weltraumschaf.codeanalyzer.test.One");
+        final InterfaceType one = data.getInterface("de.weltraumschaf.codeanalyzer.test.One");
         assertThat(one, notNullValue());
         assertThat(one.getVisibility(), is(Visibility.PUBLIC));
         assertThat(one.getPosition(), equalTo(Position.DEFAULT));
@@ -65,7 +69,7 @@ public class JavaFileAnalyzerTest {
         }
 
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.AbstractOne"), is(true));
-        final Class abstractOne = data.getClass("de.weltraumschaf.codeanalyzer.test.AbstractOne");
+        final ClassType abstractOne = data.getClass("de.weltraumschaf.codeanalyzer.test.AbstractOne");
         assertThat(abstractOne, notNullValue());
         assertThat(abstractOne.isAbstract(), is(true));
         assertThat(abstractOne.getVisibility(), is(Visibility.PACKAGE));
@@ -73,7 +77,7 @@ public class JavaFileAnalyzerTest {
             equalTo(new Position(nameToFile.get("AbstractOne.java").getAbsolutePath(), 23)));
 
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.OneImplA"), is(true));
-        final Class oneImplA = data.getClass("de.weltraumschaf.codeanalyzer.test.OneImplA");
+        final ClassType oneImplA = data.getClass("de.weltraumschaf.codeanalyzer.test.OneImplA");
         assertThat(oneImplA, notNullValue());
         assertThat(oneImplA.isAbstract(), is(false));
         assertThat(oneImplA.getVisibility(), is(Visibility.PACKAGE));
@@ -81,7 +85,7 @@ public class JavaFileAnalyzerTest {
             equalTo(new Position(nameToFile.get("OneImplA.java").getAbsolutePath(), 20)));
 
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.OneImplB"), is(true));
-        final Class oneImplB = data.getClass("de.weltraumschaf.codeanalyzer.test.OneImplB");
+        final ClassType oneImplB = data.getClass("de.weltraumschaf.codeanalyzer.test.OneImplB");
         assertThat(oneImplB, notNullValue());
         assertThat(oneImplB.isAbstract(), is(false));
         assertThat(oneImplB.getVisibility(), is(Visibility.PACKAGE));
@@ -89,7 +93,7 @@ public class JavaFileAnalyzerTest {
             equalTo(new Position(nameToFile.get("OneImplB.java").getAbsolutePath(), 20)));
 
         assertThat(data.hasClass("de.weltraumschaf.codeanalyzer.test.Ones"), is(true));
-        final Class ones = data.getClass("de.weltraumschaf.codeanalyzer.test.Ones");
+        final ClassType ones = data.getClass("de.weltraumschaf.codeanalyzer.test.Ones");
         assertThat(ones, notNullValue());
         assertThat(ones.isAbstract(), is(false));
         assertThat(ones.getVisibility(), is(Visibility.PUBLIC));
@@ -97,7 +101,7 @@ public class JavaFileAnalyzerTest {
             equalTo(new Position(nameToFile.get("Ones.java").getAbsolutePath(), 20)));
 
         assertThat(data.hasInterface("de.weltraumschaf.codeanalyzer.test.One"), is(true));
-        final Interface one = data.getInterface("de.weltraumschaf.codeanalyzer.test.One");
+        final InterfaceType one = data.getInterface("de.weltraumschaf.codeanalyzer.test.One");
         assertThat(one, notNullValue());
         assertThat(one.getVisibility(), is(Visibility.PUBLIC));
         assertThat(one.getPosition(),

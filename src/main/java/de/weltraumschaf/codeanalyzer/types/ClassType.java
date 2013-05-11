@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
 import com.google.common.collect.Maps;
 import java.util.Collection;
@@ -21,7 +21,12 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public final class Class extends BaseUnit {
+public final class ClassType extends BaseType {
+
+    /**
+     * Default for {@link #extendedClass}.
+     */
+    private static final ClassType OBJECT = new ClassType(Package.create("java.lang"), "Object", Visibility.PUBLIC);
 
     /**
      * Holds the implemented interfaces.
@@ -33,25 +38,25 @@ public final class Class extends BaseUnit {
      * <dd>Instance of interface object.
      * </dl>
      */
-    private final Map<String, Interface> implementedInterfaces = Maps.newHashMap();
+    private final Map<String, InterfaceType> implementedInterfaces = Maps.newHashMap();
     /**
      * Whether it is an abstract class or not.
      */
     private final boolean isAbstract;
     /**
-     * Class from which this one is derived.
+     * ClassType from which this one is derived.
      *
-     * May be {@code null} if class does not inherit from other class than {@link java.lang.Object}.
+     * May be {@value #OBJECT} if class does not inherit from other class than {@link java.lang.Object}.
      */
-    private Class extendedClass;
+    private ClassType extendedClass = OBJECT;
 
     /**
-     * Convenience constructor initializes {@link BaseUnit#visibility} with {@link Visibility#PACKAGE}.
+     * Convenience constructor initializes {@link BaseType#visibility} with {@link Visibility#PACKAGE}.
      *
      * @param containingPackage package in which the class s declared
      * @param name pure name without package
      */
-    public Class(final Package containingPackage, final String name) {
+    public ClassType(final Package containingPackage, final String name) {
         this(containingPackage, name, Visibility.PACKAGE);
     }
 
@@ -62,7 +67,7 @@ public final class Class extends BaseUnit {
      * @param name pure name without package
      * @param visibility visibility of the class
      */
-    public Class(final Package containingPackage, final String name, final Visibility visibility) {
+    public ClassType(final Package containingPackage, final String name, final Visibility visibility) {
         this(containingPackage, name, visibility, false);
     }
 
@@ -74,7 +79,7 @@ public final class Class extends BaseUnit {
      * @param visibility visibility of the class
      * @param isAbstract whether the class is abstract or not
      */
-    public Class(final Package containingPackage,
+    public ClassType(final Package containingPackage,
             final String name,
             final Visibility visibility,
             final boolean isAbstract) {
@@ -83,11 +88,11 @@ public final class Class extends BaseUnit {
     }
 
     /**
-     * Add an {@link Interface interface} which the class implements.
+     * Add an {@link InterfaceType interface} which the class implements.
      *
      * @param iface implemented interface
      */
-    public void implement(final Interface iface) {
+    public void implement(final InterfaceType iface) {
         implementedInterfaces.put(iface.getFullQualifiedName(), iface);
         // Must be afterwards to prevent endless loop.
         if (!iface.hasImplementation(this)) {
@@ -96,21 +101,21 @@ public final class Class extends BaseUnit {
     }
 
     /**
-     * Whether the class implements an {@link Interface interface} or not.
+     * Whether the class implements an {@link InterfaceType interface} or not.
      *
      * @see #doesImplement(java.lang.String)
      * @param iface to check for
      * @return {@code true} if the class implements the interface; else {@code false}
      */
     @SuppressWarnings(value = "OCP_OVERLY_CONCRETE_PARAMETER", justification = "Only interfaces can be implemented.")
-    public boolean doesImplement(final Interface iface) {
+    public boolean doesImplement(final InterfaceType iface) {
         return doesImplement(iface.getFullQualifiedName());
     }
 
     /**
-     * Whether the class implements an {@link Interface interface} or not.
+     * Whether the class implements an {@link InterfaceType interface} or not.
      *
-     * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.Interface)} so that
+     * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.InterfaceType)} so that
      * this method returns {@code true} for the interface.
      *
      * @param fullQualifiedName name constructed of package and name
@@ -123,7 +128,7 @@ public final class Class extends BaseUnit {
     /**
      * Get a particular implemented interface.
      *
-     * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.Interface)} so that
+     * An implemented interface must be added by {@link #implement(de.weltraumschaf.codeanalyzer.InterfaceType)} so that
      * this method returns the interface.
      *
      * @param fullQualifiedName name constructed package and name
@@ -132,7 +137,7 @@ public final class Class extends BaseUnit {
      * @throws IllegalArgumentException if class does not implement the interface
      * CHECKSTYLE:ON
      */
-    public Interface getInterface(final String fullQualifiedName) {
+    public InterfaceType getInterface(final String fullQualifiedName) {
         if (!doesImplement(fullQualifiedName)) {
             throw new IllegalArgumentException(
                     String.format("Class %s does not implement %s!", getFullQualifiedName(), fullQualifiedName));
@@ -146,7 +151,7 @@ public final class Class extends BaseUnit {
      *
      * @return never {@code null}, maybe empty collection
      */
-    public Collection<Interface> interfaces() {
+    public Collection<InterfaceType> interfaces() {
         return implementedInterfaces.values();
     }
 
@@ -155,12 +160,12 @@ public final class Class extends BaseUnit {
      *
      * @return may return {@code null} if class only extends {@link java.lang.Object}
      */
-    public Class extendedClass() {
+    public ClassType extendedClass() {
         return extendedClass;
     }
 
     public boolean doesExtendClass() {
-        return null != extendedClass;
+        return !OBJECT.equals(extendedClass);
     }
 
     /**
@@ -168,7 +173,7 @@ public final class Class extends BaseUnit {
      *
      * @param clazz which is extended
      */
-    public void extend(final Class clazz) {
+    public void extend(final ClassType clazz) {
         this.extendedClass = clazz;
     }
 
@@ -182,8 +187,8 @@ public final class Class extends BaseUnit {
     }
 
     @Override
-    public void update(final Unit unit) {
-        if (!(unit instanceof Class)) {
+    public void update(final Type unit) {
+        if (!(unit instanceof ClassType)) {
             return;
         }
 

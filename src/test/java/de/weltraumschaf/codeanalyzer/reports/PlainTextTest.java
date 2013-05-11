@@ -12,11 +12,11 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Interface;
-import de.weltraumschaf.codeanalyzer.Class;
-import de.weltraumschaf.codeanalyzer.Package;
-import de.weltraumschaf.codeanalyzer.Position;
-import de.weltraumschaf.codeanalyzer.Visibility;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.Package;
+import de.weltraumschaf.codeanalyzer.types.Position;
+import de.weltraumschaf.codeanalyzer.types.Visibility;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -62,22 +62,22 @@ public class PlainTextTest {
 
     @Test
     public void iface_publicWithDefaultPositionAndNoChilds() {
-        final Interface iface = new Interface(Package.create("foo.bar"), "Baz");
+        final InterfaceType iface = new InterfaceType(Package.create("foo.bar"), "Baz");
         assertThat(sut.iface(iface), is(equalTo("I PUBLIC foo.bar.Baz (unknown:0)" + NL)));
     }
 
     @Test
     public void iface_packageWithPositionAndNoChilds() {
-        final Interface iface = new Interface(Package.create("foo.bar"), "Baz", Visibility.PACKAGE);
+        final InterfaceType iface = new InterfaceType(Package.create("foo.bar"), "Baz", Visibility.PACKAGE);
         iface.setPosition(new Position("foo/bar/Baz.java", 23));
         assertThat(sut.iface(iface), is(equalTo("I PACKAGE foo.bar.Baz (foo/bar/Baz.java:23)" + NL)));
     }
 
     @Test
     public void iface_withOneImplementations() {
-        final Interface iface = new Interface(Package.create("foo.bar"), "Foo");
+        final InterfaceType iface = new InterfaceType(Package.create("foo.bar"), "Foo");
         iface.setPosition(new Position("foo/bar/Foo.java", 23));
-        final Class clazz = new Class(Package.create("foo.bar"), "Bar");
+        final ClassType clazz = new ClassType(Package.create("foo.bar"), "Bar");
         clazz.setPosition(new Position("foo/bar/Bar.java", 23));
         clazz.implement(iface);
         assertThat(sut.iface(iface), is(equalTo(
@@ -87,12 +87,12 @@ public class PlainTextTest {
 
     @Test
     public void iface_withTwoImplementations() {
-        final Interface iface = new Interface(Package.create("foo.bar"), "Foo");
+        final InterfaceType iface = new InterfaceType(Package.create("foo.bar"), "Foo");
         iface.setPosition(new Position("foo/bar/Foo.java", 23));
-        final Class clazz1 = new Class(Package.create("foo.bar"), "Bar");
+        final ClassType clazz1 = new ClassType(Package.create("foo.bar"), "Bar");
         clazz1.setPosition(new Position("foo/bar/Bar.java", 23));
         clazz1.implement(iface);
-        final Class clazz2 = new Class(Package.create("foo.bar"), "Baz");
+        final ClassType clazz2 = new ClassType(Package.create("foo.bar"), "Baz");
         clazz2.setPosition(new Position("foo/bar/Baz.java", 23));
         clazz2.implement(iface);
         assertThat(sut.iface(iface), is(equalTo(
@@ -103,9 +103,9 @@ public class PlainTextTest {
 
     @Test
     public void iface_withOneExtendingInterface() {
-        final Interface iface1 = new Interface(Package.create("foo.bar"), "Foo");
+        final InterfaceType iface1 = new InterfaceType(Package.create("foo.bar"), "Foo");
         iface1.setPosition(new Position("foo/bar/Foo.java", 23));
-        final Interface iface2 = new Interface(Package.create("foo.bar"), "Bar");
+        final InterfaceType iface2 = new InterfaceType(Package.create("foo.bar"), "Bar");
         iface2.setPosition(new Position("foo/bar/Bar.java", 23));
         iface2.extend(iface1);
         assertThat(sut.iface(iface1), is(equalTo(
@@ -122,20 +122,20 @@ public class PlainTextTest {
 
     @Test
     public void implementation_packageWithDefaultPositionAndNoChilds() {
-        final Class clazz = new Class(Package.create("foo.bar"), "Baz");
+        final ClassType clazz = new ClassType(Package.create("foo.bar"), "Baz");
         assertThat(sut.implementation(clazz), is(equalTo("C PACKAGE foo.bar.Baz (unknown:0)" + NL)));
     }
 
     @Test
     public void implementation_publicWithPositionAndNoChilds() {
-        final Class clazz = new Class(Package.create("foo.bar"), "Baz", Visibility.PUBLIC);
+        final ClassType clazz = new ClassType(Package.create("foo.bar"), "Baz", Visibility.PUBLIC);
         clazz.setPosition(new Position("foo/bar/Baz.java", 23));
         assertThat(sut.implementation(clazz), is(equalTo("C PUBLIC foo.bar.Baz (foo/bar/Baz.java:23)" + NL)));
     }
 
     @Test
     public void implementation_packageAbstractWithPositionAndNoChilds() {
-        final Class clazz = new Class(Package.create("foo.bar"), "Baz", Visibility.PUBLIC, true);
+        final ClassType clazz = new ClassType(Package.create("foo.bar"), "Baz", Visibility.PUBLIC, true);
         clazz.setPosition(new Position("foo/bar/Baz.java", 23));
         assertThat(sut.implementation(clazz), is(equalTo("C ABSTRACT PUBLIC foo.bar.Baz (foo/bar/Baz.java:23)" + NL)));
     }

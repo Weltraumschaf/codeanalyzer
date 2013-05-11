@@ -12,8 +12,8 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Interface;
-import de.weltraumschaf.codeanalyzer.Class;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
 
 /**
  *
@@ -33,28 +33,28 @@ class InheritanceGraph extends BaseReport {
         buf.append(format.start());
         format.indent();
 
-        for (final Interface iface : data.getInterfaces()) {
+        for (final InterfaceType iface : data.getInterfaces()) {
             buf.append(format.iface(iface));
         }
 
-        for (final Class clazz : data.getClasses()) {
+        for (final ClassType clazz : data.getClasses()) {
             buf.append(format.implementation(clazz));
         }
 
         buf.append(format.nl());
 
-        for (final Interface iface : data.getInterfaces()) {
-            for (final Interface extended : iface.getExtendedInterfaces()) {
+        for (final InterfaceType iface : data.getInterfaces()) {
+            for (final InterfaceType extended : iface.getExtendedInterfaces()) {
                 buf.append(format.indention()).append(String.format(EDGE_FORMAT, iface.getName(), extended.getName()));
             }
         }
 
-        for (final Class clazz : data.getClasses()) {
+        for (final ClassType clazz : data.getClasses()) {
             if (clazz.doesExtendClass()) {
                 buf.append(format.indention()).append(String.format(EDGE_FORMAT, clazz.getName(), clazz.extendedClass().getName()));
             }
 
-            for (final Interface implemented : clazz.interfaces()) {
+            for (final InterfaceType implemented : clazz.interfaces()) {
                 buf.append(format.indention()).append(String.format(EDGE_FORMAT, clazz.getName(), implemented.getName()));
             }
         }

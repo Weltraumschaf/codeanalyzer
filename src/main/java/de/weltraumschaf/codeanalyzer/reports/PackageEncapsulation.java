@@ -11,8 +11,8 @@
  */
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Interface;
-import de.weltraumschaf.codeanalyzer.Class;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
 import de.weltraumschaf.codeanalyzer.UnitCollector;
 import java.util.Collection;
 
@@ -39,23 +39,23 @@ class PackageEncapsulation extends BaseReport {
     public String generate() {
         final StringBuilder buf = new StringBuilder();
         buf.append(format.title("Package encapsulation"));
-        final Collection<Interface> ifaces = data.getInterfaces();
+        final Collection<InterfaceType> ifaces = data.getInterfaces();
 
         if (ifaces.isEmpty()) {
             buf.append(format.text("No data to generate report for."));
             return buf.toString();
         }
 
-        for (final Interface iface : ifaces) {
+        for (final InterfaceType iface : ifaces) {
             buf.append(format.iface(iface));
-            final Collection<Class> implementations = iface.getImplementations();
+            final Collection<ClassType> implementations = iface.getImplementations();
 
             if (implementations.isEmpty()) {
                 buf.append(format.text("No implementations."));
             } else {
                 buf.append(format.implementation());
 
-                for (final Class clazz : implementations) {
+                for (final ClassType clazz : implementations) {
                     buf.append(format.implementation(clazz));
                 }
             }

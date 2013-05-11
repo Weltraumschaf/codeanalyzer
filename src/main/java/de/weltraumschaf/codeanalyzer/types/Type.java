@@ -9,14 +9,14 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
 /**
  * Interface for a found unit like classes or interfaces.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public interface Unit {
+public interface Type {
 
     /**
      * Get the containing package.
@@ -65,6 +65,6 @@ public interface Unit {
      *
      * @param other unit to get new information from
      */
-    void update(Unit other);
+    void update(Type other);
 
 }

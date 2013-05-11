@@ -11,8 +11,8 @@
  */
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Class;
-import de.weltraumschaf.codeanalyzer.Interface;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 
 /**
  * Formatter to generate plain text reports.
@@ -33,7 +33,7 @@ class PlainText extends BaseFormatter {
     }
 
     @Override
-    public String iface(final Interface iface) {
+    public String iface(final InterfaceType iface) {
         if (null == iface) {
             throw new NullPointerException("Interface must not be null!");
         }
@@ -44,7 +44,7 @@ class PlainText extends BaseFormatter {
         if (iface.hasExtendingInterfaces()) {
             indent();
 
-            for (final Interface extender : iface.getExtendingInterfaces()) {
+            for (final InterfaceType extender : iface.getExtendingInterfaces()) {
                 buffer.append(indention())
                       .append(SPLITTER)
                       .append(singleInterface(extender));
@@ -55,7 +55,7 @@ class PlainText extends BaseFormatter {
         if (iface.hasImplementations()) {
             indent();
 
-            for (final Class impls : iface.getImplementations()) {
+            for (final ClassType impls : iface.getImplementations()) {
                 buffer.append(indention())
                       .append(SPLITTER)
                       .append(singleClass(impls));
@@ -73,7 +73,7 @@ class PlainText extends BaseFormatter {
      * @param iface interface to format
      * @return formatted string
      */
-    private String singleInterface(final Interface iface) {
+    private String singleInterface(final InterfaceType iface) {
         return String.format("I %s %s (%s)%n",
                 iface.getVisibility(),
                 iface.getFullQualifiedName(),
@@ -81,7 +81,7 @@ class PlainText extends BaseFormatter {
     }
 
     @Override
-    public String implementation(final Class clazz) {
+    public String implementation(final ClassType clazz) {
         if (null == clazz) {
             throw new NullPointerException("Class must not be null!");
         }
@@ -89,7 +89,7 @@ class PlainText extends BaseFormatter {
         return singleClass(clazz);
     }
 
-    private String singleClass(final Class clazz) {
+    private String singleClass(final ClassType clazz) {
         final String format;
 
         if (clazz.isAbstract()) {

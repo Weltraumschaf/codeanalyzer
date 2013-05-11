@@ -11,8 +11,8 @@
  */
 package de.weltraumschaf.codeanalyzer.reports;
 
-import de.weltraumschaf.codeanalyzer.Class;
-import de.weltraumschaf.codeanalyzer.Interface;
+import de.weltraumschaf.codeanalyzer.types.ClassType;
+import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -118,12 +118,12 @@ public class BaseFormatterTest {
         }
 
         @Override
-        public String iface(Interface iface) {
+        public String iface(InterfaceType iface) {
             return "";
         }
 
         @Override
-        public String implementation(Class clazz) {
+        public String implementation(ClassType clazz) {
             return "";
         }
 

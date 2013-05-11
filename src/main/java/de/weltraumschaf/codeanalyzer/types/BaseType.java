@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
 import com.google.common.base.Objects;
 
@@ -18,7 +18,7 @@ import com.google.common.base.Objects;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-abstract class BaseUnit implements Unit {
+abstract class BaseType implements Type {
 
     /**
      * Package in which the unit is declared.
@@ -44,7 +44,7 @@ abstract class BaseUnit implements Unit {
      * @param name of the unit
      * @param visibility visibility of the unit
      */
-    public BaseUnit(final Package containingPackage, final String name, final Visibility visibility) {
+    public BaseType(final Package containingPackage, final String name, final Visibility visibility) {
         super();
         this.containingPackage = containingPackage;
         this.name = name;
@@ -88,16 +88,16 @@ abstract class BaseUnit implements Unit {
     }
 
     @Override
-    public void update(final Unit other) {
+    public void update(final Type other) {
         if (equals(other)) {
             return;
         }
 
-        if (!(other instanceof BaseUnit)) {
+        if (!(other instanceof BaseType)) {
             return;
         }
 
-        final BaseUnit unit = (BaseUnit) other;
+        final BaseType unit = (BaseType) other;
 
         if (Objects.equal(containingPackage, unit.containingPackage) && Objects.equal(name, unit.name)) {
             visibility = unit.visibility;
@@ -112,11 +112,11 @@ abstract class BaseUnit implements Unit {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof BaseUnit)) {
+        if (!(obj instanceof BaseType)) {
             return false;
         }
 
-        final BaseUnit other = (BaseUnit) obj;
+        final BaseType other = (BaseType) obj;
         return Objects.equal(containingPackage, other.containingPackage)
                 && Objects.equal(name, other.name)
                 && Objects.equal(visibility, other.visibility)

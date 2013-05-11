@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Objects;
@@ -232,7 +232,7 @@ public class Package { // Must not be final because Null() extends
      * @param fullQualifiedName package name object
      * @return new package object
      */
-    static Package create(final Name fullQualifiedName) {
+    public static Package create(final Name fullQualifiedName) {
         return create(fullQualifiedName.toString());
     }
 
@@ -244,7 +244,7 @@ public class Package { // Must not be final because Null() extends
      * @param fullQualifiedName name to split base name of
      * @return part from the last {@value #SEPARATOR}
      */
-    static String splitBaseName(final String fullQualifiedName) {
+    public static String splitBaseName(final String fullQualifiedName) {
         final int lastDot = fullQualifiedName.lastIndexOf(SEPARATOR);
         return fullQualifiedName.substring(lastDot + 1);
     }
@@ -255,7 +255,7 @@ public class Package { // Must not be final because Null() extends
      * @param fullQualifiedName name to split parent package of
      * @return part up to the last {@value #SEPARATOR}
      */
-    static String splitParentName(final String fullQualifiedName) {
+    public static String splitParentName(final String fullQualifiedName) {
         final int lastDot = fullQualifiedName.lastIndexOf(SEPARATOR);
 
         if (-1 == lastDot) {

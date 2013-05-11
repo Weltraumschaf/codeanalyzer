@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer;
+package de.weltraumschaf.codeanalyzer.types;
 
 import com.google.common.base.Objects;
 
@@ -24,7 +24,7 @@ public final class Position {
     /**
      * Default position.
      */
-    static final Position DEFAULT = new Position("unknown", 0);
+    public static final Position DEFAULT = new Position("unknown", 0);
     /**
      * File name.
      */
