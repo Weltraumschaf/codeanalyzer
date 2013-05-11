@@ -119,7 +119,7 @@ public final class Interface extends BaseUnit {
      * @param fullQualifiedName of the extended interface
      * @return extending interface object
      * CHECKSTYLE:OFF
-     * @throws IllegalArgumentException if this interface does not extend the given interface
+     * @throws IllegalArgumentException if this interface does not extendedClass the given interface
      * CHECKSTYLE:ON
      */
     public Interface getExtendedInterface(final String fullQualifiedName) {
@@ -129,6 +129,10 @@ public final class Interface extends BaseUnit {
         }
 
         return extendingInterfaces.get(fullQualifiedName);
+    }
+
+    public Collection<Interface> getExtendedInterfaces() {
+        return extendingInterfaces.values();
     }
 
     /**

@@ -13,6 +13,7 @@
 package de.weltraumschaf.codeanalyzer.reports;
 
 import de.weltraumschaf.codeanalyzer.Interface;
+import de.weltraumschaf.codeanalyzer.Class;
 
 /**
  * Basic formatter functionality.
@@ -100,7 +101,7 @@ abstract class BaseFormatter implements Formatter {
     }
 
     @Override
-    public String implementation(final de.weltraumschaf.codeanalyzer.Class clazz) {
+    public String implementation(final Class clazz) {
         return "";
     }
 

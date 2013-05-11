@@ -155,8 +155,12 @@ public final class Class extends BaseUnit {
      *
      * @return may return {@code null} if class only extends {@link java.lang.Object}
      */
-    public Class extend() {
+    public Class extendedClass() {
         return extendedClass;
+    }
+
+    public boolean doesExtendClass() {
+        return null != extendedClass;
     }
 
     /**

@@ -21,6 +21,8 @@ import de.weltraumschaf.codeanalyzer.Class;
  */
 class InheritanceGraph extends BaseReport {
 
+    private static final String EDGE_FORMAT = "%s -> %s;%n";
+
     public InheritanceGraph() {
         super(Formatters.createDot());
     }
@@ -39,7 +41,24 @@ class InheritanceGraph extends BaseReport {
             buf.append(format.implementation(clazz));
         }
 
-        // TODO implement edges
+        buf.append(format.nl());
+
+        for (final Interface iface : data.getInterfaces()) {
+            for (final Interface extended : iface.getExtendedInterfaces()) {
+                buf.append(format.indention()).append(String.format(EDGE_FORMAT, iface.getName(), extended.getName()));
+            }
+        }
+
+        for (final Class clazz : data.getClasses()) {
+            if (clazz.doesExtendClass()) {
+                buf.append(format.indention()).append(String.format(EDGE_FORMAT, clazz.getName(), clazz.extendedClass().getName()));
+            }
+
+            for (final Interface implemented : clazz.interfaces()) {
+                buf.append(format.indention()).append(String.format(EDGE_FORMAT, clazz.getName(), implemented.getName()));
+            }
+        }
+
         format.exdent();
         buf.append(format.end());
         return buf.toString();

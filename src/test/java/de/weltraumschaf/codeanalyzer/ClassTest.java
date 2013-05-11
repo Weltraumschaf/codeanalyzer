@@ -46,10 +46,10 @@ public class ClassTest {
     @Test
     public void getAndSetExtendedClass() {
         final Class sut = new Class(Package.NULL, "Foo");
-        assertThat(sut.extend(), is(equalTo(null)));
+        assertThat(sut.extendedClass(), is(equalTo(null)));
         final Class extended = new Class(Package.NULL, "Bar");
         sut.extend(extended);
-        assertThat(sut.extend(), is(equalTo(extended)));
+        assertThat(sut.extendedClass(), is(equalTo(extended)));
     }
 
     @Test

@@ -82,35 +82,76 @@ class Dot extends BaseFormatter {
         return  indention() + formatNode(clazz, label.toString());
     }
 
+    /**
+     * Formats a {@link Unit} as Dot node.
+     *
+     * @param unit
+     * @param label
+     * @return
+     */
     String formatNode(final Unit unit, final String label) {
         return String.format("%s [label=\"%s%s\", shape=box];%n", unit.getName(), label, unit.getFullQualifiedName());
     }
 
+    /**
+     * Helps formatting stereotypes of a {@link Unit type}.
+     *
+     * A stereotype is represented by its value preceded by '≪' and followed by '≫'.
+     */
     private enum Stereotype {
 
+        /**
+         * Interface stereotype.
+         */
         INTERFACE("interface"),
+        /**
+         * Class stereotype.
+         */
         CLASS("class"),
+        /**
+         * Abstract stereotype.
+         */
         ABSTRACT("abstract"),
+        /**
+         * Public stereotype.
+         */
         PUBLIC("public"),
+        /**
+         * Package stereotype.
+         */
         PACKAGE("package"),
+        /**
+         * Protected stereotype.
+         */
         PROTECTED("protected"),
+        /**
+         * Private stereotype.
+         */
         PRIVATE("private");
 
         /**
-         * ≪.
+         * Special right double arrow character '≪'.
          *
-         * http://www.fileformat.info/info/unicode/char/ab/index.htm
+         * @see http://www.fileformat.info/info/unicode/char/ab/index.htm
          */
         private static final String LAQUO = "\u00ab";
         /**
-         * ≫.
+         * Special left double arrow character '≫'.
          *
-         * http://www.fileformat.info/info/unicode/char/00bb/index.htm
+         * @see http://www.fileformat.info/info/unicode/char/00bb/index.htm
          */
         private static final String RAQUO = "\u00bb";
+        /**
+         * Stereo type value.
+         */
         private final String str;
 
-        private Stereotype(String str) {
+        /**
+         * Dedicated constructor.
+         *
+         * @param str value of stereotype
+         */
+        private Stereotype(final String str) {
             this.str = String.format(str);
         }
 
