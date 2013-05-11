@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.codeanalyzer.types;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
@@ -152,7 +153,7 @@ public final class ClassType extends BaseType {
      * @return never {@code null}, maybe empty collection
      */
     public Collection<InterfaceType> interfaces() {
-        return implementedInterfaces.values();
+        return Lists.newArrayList(implementedInterfaces.values());
     }
 
     /**
