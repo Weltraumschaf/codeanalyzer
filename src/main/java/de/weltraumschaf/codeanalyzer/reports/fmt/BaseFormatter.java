@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer.reports;
+package de.weltraumschaf.codeanalyzer.reports.fmt;
 
 import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import de.weltraumschaf.codeanalyzer.types.ClassType;

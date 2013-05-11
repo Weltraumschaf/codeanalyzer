@@ -12,10 +12,6 @@
 
 package de.weltraumschaf.codeanalyzer.types;
 
-import de.weltraumschaf.codeanalyzer.types.Package;
-import de.weltraumschaf.codeanalyzer.types.ClassType;
-import de.weltraumschaf.codeanalyzer.types.Visibility;
-import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -50,7 +46,7 @@ public class ClassTypeTest {
     @Test
     public void getAndSetExtendedClass() {
         final ClassType sut = new ClassType(Package.NULL, "Foo");
-        assertThat(sut.extendedClass(), is(equalTo(null)));
+        assertThat(sut.extendedClass(), is(equalTo(ClassType.OBJECT)));
         final ClassType extended = new ClassType(Package.NULL, "Bar");
         sut.extend(extended);
         assertThat(sut.extendedClass(), is(equalTo(extended)));

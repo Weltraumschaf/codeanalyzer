@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
+import de.weltraumschaf.codeanalyzer.reports.fmt.Formatter;
 import de.weltraumschaf.codeanalyzer.UnitCollector;
 
 /**

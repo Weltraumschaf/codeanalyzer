@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.codeanalyzer.reports;
 
+import de.weltraumschaf.codeanalyzer.reports.fmt.Formatters;
 import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import de.weltraumschaf.codeanalyzer.types.ClassType;
 import de.weltraumschaf.codeanalyzer.UnitCollector;

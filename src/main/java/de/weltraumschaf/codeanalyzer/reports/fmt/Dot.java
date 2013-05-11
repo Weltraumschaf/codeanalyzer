@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.codeanalyzer.reports;
+package de.weltraumschaf.codeanalyzer.reports.fmt;
 
 import com.google.common.collect.Maps;
 import de.weltraumschaf.codeanalyzer.types.ClassType;
@@ -19,22 +19,40 @@ import de.weltraumschaf.codeanalyzer.types.Visibility;
 import java.util.Map;
 
 /**
+ * Formatter to generate Dot language.
  *
+ * @see http://en.wikipedia.org/wiki/DOT_language
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class Dot extends BaseFormatter {
 
-    private static final String START = "/*%n"
+    /**
+     * Start of every Dot file.
+     */
+    private static final String START_FORMAT = "/*%n"
             + " * Auto generated type hierarchy dot file.%n"
             + " *%n"
             + " * @see http://en.wikipedia.org/wiki/DOT_language%n"
             + " * @see http://www.graphviz.org/content/dot-language%n"
             + " */%n"
             + "digraph TypesHierarchy {%n%n";
-    private static final String END = "%n}%n";
-
+    /**
+     * End of every Dot file.
+     */
+    private static final String END_FORMAT = "%n}%n";
+    /**
+     * Format of Dot node.
+     */
+    private static final String NODE_FORMAT = "%s [label=\"%s%s\", shape=box];%n";
+    private static final String STYLE_DOTTED = "[style=dotted]";
+    /**
+     * Format of Dot edge.
+     */
+    private static final String EDGE_FORMAT = "%s -> %s;%n";
+    /**
+     * Maps {@link Visibility} to {@link Stereotype}.
+     */
     private static final Map<Visibility, Stereotype> lookup = Maps.newHashMap();
-
     static {
         lookup.put(Visibility.PUBLIC, Stereotype.PUBLIC);
         lookup.put(Visibility.PACKAGE, Stereotype.PACKAGE);
@@ -42,18 +60,24 @@ class Dot extends BaseFormatter {
         lookup.put(Visibility.PRIVATE, Stereotype.PRIVATE);
     }
 
+    /**
+     * Maps {@link Visibility} to a according {@link Stereotype}.
+     *
+     * @param visibility mapped visibility
+     * @return according enum
+     */
     static Stereotype mapVisibility(final Visibility visibility) {
         return lookup.get(visibility);
     }
 
     @Override
     public String start() {
-        return String.format(START);
+        return String.format(START_FORMAT);
     }
 
     @Override
     public String end() {
-        return String.format(END);
+        return String.format(END_FORMAT);
     }
 
     @Override
@@ -85,12 +109,16 @@ class Dot extends BaseFormatter {
     /**
      * Formats a {@link Type} as Dot node.
      *
-     * @param unit
+     * @param t
      * @param label
      * @return
      */
-    String formatNode(final Type unit, final String label) {
-        return String.format("%s [label=\"%s%s\", shape=box];%n", unit.getName(), label, unit.getFullQualifiedName());
+    String formatNode(final Type t, final String label) {
+        return String.format(NODE_FORMAT, t.getName(), label, t.getFullQualifiedName());
+    }
+
+    String formatEdge(final Type t1, final Type t2) {
+        return String.format(EDGE_FORMAT, t1.getName(), t2.getName());
     }
 
     /**

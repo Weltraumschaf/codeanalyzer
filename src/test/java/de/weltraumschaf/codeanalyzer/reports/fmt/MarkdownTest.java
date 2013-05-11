@@ -10,8 +10,10 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer.reports;
+package de.weltraumschaf.codeanalyzer.reports.fmt;
 
+import de.weltraumschaf.codeanalyzer.reports.fmt.Markdown;
+import de.weltraumschaf.codeanalyzer.reports.fmt.Formatter;
 import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import de.weltraumschaf.codeanalyzer.types.ClassType;
 import static org.hamcrest.Matchers.equalTo;

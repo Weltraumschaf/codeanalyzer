@@ -27,7 +27,7 @@ public final class ClassType extends BaseType {
     /**
      * Default for {@link #extendedClass}.
      */
-    private static final ClassType OBJECT = new ClassType(Package.create("java.lang"), "Object", Visibility.PUBLIC);
+    static final ClassType OBJECT = new ClassType(Package.create("java.lang"), "Object", Visibility.PUBLIC);
 
     /**
      * Holds the implemented interfaces.

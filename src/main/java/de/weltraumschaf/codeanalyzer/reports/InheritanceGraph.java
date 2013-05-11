@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.codeanalyzer.reports;
 
+import de.weltraumschaf.codeanalyzer.reports.fmt.Formatters;
 import de.weltraumschaf.codeanalyzer.types.InterfaceType;
 import de.weltraumschaf.codeanalyzer.types.ClassType;
 
@@ -21,7 +22,7 @@ import de.weltraumschaf.codeanalyzer.types.ClassType;
  */
 class InheritanceGraph extends BaseReport {
 
-    private static final String EDGE_FORMAT = "%s -> %s;%n";
+    private static final String EDGE_FORMAT = "%s -> %s%s;%n";
 
     public InheritanceGraph() {
         super(Formatters.createDot());
@@ -45,17 +46,20 @@ class InheritanceGraph extends BaseReport {
 
         for (final InterfaceType iface : data.getInterfaces()) {
             for (final InterfaceType extended : iface.getExtendedInterfaces()) {
-                buf.append(format.indention()).append(String.format(EDGE_FORMAT, iface.getName(), extended.getName()));
+                buf.append(format.indention())
+                   .append(String.format(EDGE_FORMAT, iface.getName(), extended.getName(), ""));
             }
         }
 
         for (final ClassType clazz : data.getClasses()) {
             if (clazz.doesExtendClass()) {
-                buf.append(format.indention()).append(String.format(EDGE_FORMAT, clazz.getName(), clazz.extendedClass().getName()));
+                buf.append(format.indention())
+                   .append(String.format(EDGE_FORMAT, clazz.getName(), clazz.extendedClass().getName(), ""));
             }
 
             for (final InterfaceType implemented : clazz.interfaces()) {
-                buf.append(format.indention()).append(String.format(EDGE_FORMAT, clazz.getName(), implemented.getName()));
+                buf.append(format.indention())
+                   .append(String.format(EDGE_FORMAT, clazz.getName(), implemented.getName(), " [style=dotted]"));
             }
         }
 

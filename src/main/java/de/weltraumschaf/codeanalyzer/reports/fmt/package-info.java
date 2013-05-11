@@ -10,31 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer.reports;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
-
 /**
- *
- * @author Sven Strittmatter <weltraumschaf@googlemail.com>
+ * Everything necessary for formatting report output.
  */
-public class DotTest {
-
-    @Test
-    public void testStart() {
-    }
-
-    @Test
-    public void testEnd() {
-    }
-
-    @Test
-    public void testIface() {
-    }
-
-    @Test
-    public void testImplementation() {
-    }
-
-}
+package de.weltraumschaf.codeanalyzer.reports.fmt;

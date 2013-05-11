@@ -10,8 +10,12 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.codeanalyzer.reports;
+package de.weltraumschaf.codeanalyzer.reports.fmt;
 
+import de.weltraumschaf.codeanalyzer.reports.fmt.PlainText;
+import de.weltraumschaf.codeanalyzer.reports.fmt.Markdown;
+import de.weltraumschaf.codeanalyzer.reports.fmt.Formatters;
+import de.weltraumschaf.codeanalyzer.reports.fmt.Formatter;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -53,6 +57,17 @@ public class FormattersTest {
         final Formatter second = Formatters.createPlainText();
         assertThat(second, is(notNullValue()));
         assertThat(second, is(instanceOf(PlainText.class)));
+        assertThat(first, is(not(sameInstance(second))));
+    }
+
+    @Test
+    public void testCreateDot() {
+        final Formatter first = Formatters.createDot();
+        assertThat(first, is(notNullValue()));
+        assertThat(first, is(instanceOf(Dot.class)));
+        final Formatter second = Formatters.createDot();
+        assertThat(second, is(notNullValue()));
+        assertThat(second, is(instanceOf(Dot.class)));
         assertThat(first, is(not(sameInstance(second))));
     }
 
